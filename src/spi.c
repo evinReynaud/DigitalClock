@@ -5,8 +5,8 @@
 
 void SPI_MasterInit(void)
 {
-    DDRE |= _BV(PE5);
     DDRE |= _BV(PE4);
+    DDRE &= ~_BV(PE5);
     /* Set MOSI and SCK output, all others input */
     DDRB = (1 << DDB2) | (1 << DDB1);
     /* Enable SPI, Master, set clock rate fck/16 */
