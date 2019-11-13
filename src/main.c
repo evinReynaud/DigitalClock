@@ -7,7 +7,8 @@ void main(void)
   SPI_MasterInit();
   while (1)
   {
-
+    //LE=PE5
+    //OE=PE4
     PORTE &= ~_BV(PE5);
     PORTE |= _BV(PE4);
     SPI_MasterTransmit(42);
