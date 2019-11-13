@@ -1,4 +1,16 @@
+#include <avr/io.h>
+#include "spi.h"
 
-void main() {
-  return;
+void main(void)
+{
+  SPI_MasterInit();
+  while (1)
+  {
+
+    PORTE &= ~_BV(PE4);
+    SPI_MasterTransmit(8);
+    SPI_MasterTransmit(8);
+    PORTE |= _BV(PE5);
+    PORTE &= ~_BV(PE5);
+  }
 }
