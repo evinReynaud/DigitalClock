@@ -12,6 +12,7 @@ void SPI_MasterInit(void)
     /* Enable SPI, Master, set clock rate fck/16 */
     SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
     PORTE &= ~_BV(PE4);
+    PORTE &= ~_BV(PE5);
 }
 
 void SPI_MasterSendChar(char cData)
@@ -19,17 +20,15 @@ void SPI_MasterSendChar(char cData)
     /* Start transmission */
     SPDR = cData;
     /* Wait for transmission complete */
-    while (!(SPSR & (1 << SPIF)));
+    while (!(SPSR & (1 << SPIF)))
+        ;
 }
 
-void SPI_MasterTransmit(int data)
+void SPI_MasterTransmit(unsigned int data)
 {
-    char c1 = (char) data;
-    char c2 = (char) (data >> 8);
-
-    _delay_ms(5);
-    PORTE &= ~_BV(PE5);
-    _delay_ms(5);
+    char c1 = (unsigned char)(data >> 8);
+    char c2 = (unsigned char)data;
+    _delay_ms(1);
     SPI_MasterSendChar(c1);
     SPI_MasterSendChar(c2);
     _delay_us(5);

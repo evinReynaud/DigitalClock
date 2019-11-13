@@ -5,10 +5,11 @@
 void main(void)
 {
   SPI_MasterInit();
-  Bluetooth_Init(MYUBRR);
-  while (1)
+  //Bluetooth_Init(MYUBRR);
+  while (TRUE)
   {
     char c = Bluetooth_Receive();
     Bluetooth_Transmit(c);
-    SPI_MasterTransmit(0xf0f0);
-  }}
+    SPI_MasterTransmit(0b1111101111111110); // IMPORTANT : the first bit is the last led
+  }
+}
