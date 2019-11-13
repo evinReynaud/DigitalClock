@@ -1,5 +1,3 @@
-#include <util/delay.h>
-
 #include "bluetooth.h"
 
 void main() {
