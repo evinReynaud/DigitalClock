@@ -3,7 +3,9 @@
 
 #define FOSC 13000000 // Clock Speed
 #define BAUD 38400
-#define MYUBRR FOSC/16/BAUD-1
+#define MYUBRR FOSC / 16 / BAUD - 1
+#define TRUE 1
+#define FALSE 0
 
 void Bluetooth_Init(unsigned int ubrr);
 

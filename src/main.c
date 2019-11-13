@@ -2,10 +2,12 @@
 
 #include "bluetooth.h"
 
-void main() {
+void main()
+{
   Bluetooth_Init(MYUBRR);
 
-  while(1){
+  while (TRUE)
+  {
     char c = Bluetooth_Receive();
     Bluetooth_Transmit(c);
   }
