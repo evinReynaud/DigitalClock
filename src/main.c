@@ -1,11 +1,11 @@
-#include "spi.h"
+#include "leds.h"
 #include "bluetooth.h"
 #include "leds_control.h"
 
 void main(void)
 {
-  SPI_MasterInit();
-  Bluetooth_Init(MYUBRR);
+  leds_init();
+  bluetooth_init();
   while(1) {
     leds_control();
   }

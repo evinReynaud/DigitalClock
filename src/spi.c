@@ -4,7 +4,7 @@
 //LE=PE5
 //OE=PE4
 
-void SPI_MasterInit(void)
+void SPI_master_init()
 {
   DDRE = (1 << DDE5) | (1 << DDE4);
   /* Set SS, MOSI and SCK output, all others input */
@@ -14,7 +14,7 @@ void SPI_MasterInit(void)
   PORTE &= ~_BV(PE4);
 }
 
-void SPI_MasterSendChar(char cData)
+void SPI_master_transmit(char cData)
 {
   /* Start transmission */
   SPDR = cData;
@@ -22,17 +22,9 @@ void SPI_MasterSendChar(char cData)
   while (!(SPSR & (1 << SPIF)));
 }
 
-void SPI_MasterTransmit(unsigned int data)
+void SPI_master_EOC()
 {
-  char c1 = (char) (data >> 8);
-  char c2 = (char) data;
-
-  PORTE &= ~_BV(PE5);
-  SPI_MasterSendChar(c1);
-  SPI_MasterSendChar(c2);
-  _delay_us(5);
   PORTE |= _BV(PE5);
   _delay_ms(5);
   PORTE &= ~_BV(PE5);
-  _delay_ms(5);
 }
