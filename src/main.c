@@ -2,12 +2,11 @@
 
 void main()
 {
-  Bluetooth_Init(MYUBRR);
+  bluetooth_init();
 
-  while (TRUE)
-  {
-    char c = Bluetooth_Receive();
-    Bluetooth_Transmit(c);
+  while(1){
+    char buffer[256];
+    bluetooth_receive(buffer);
+    bluetooth_transmit(buffer);
   }
-  return;
 }
