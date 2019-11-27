@@ -22,6 +22,7 @@ void SPI_master_transmit(char cData)
   while (!(SPSR & (1 << SPIF)));
 }
 
+// end of communication
 void SPI_master_EOC()
 {
   PORTE |= _BV(PE5);
