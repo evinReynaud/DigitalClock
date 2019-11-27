@@ -6,7 +6,8 @@ void main(void)
 {
   leds_init();
   bluetooth_init();
-  while(1) {
+  while (TRUE)
+  {
     leds_control();
   }
 }
