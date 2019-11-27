@@ -25,6 +25,6 @@ void SPI_master_transmit(char cData)
 void SPI_master_EOC()
 {
   PORTE |= _BV(PE5);
-  _delay_ms(5);
+  _delay_us(0.05); // min 20 ns
   PORTE &= ~_BV(PE5);
 }
