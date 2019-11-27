@@ -19,12 +19,14 @@ void SPI_master_transmit(char cData)
   /* Start transmission */
   SPDR = cData;
   /* Wait for transmission complete */
-  while (!(SPSR & (1 << SPIF)));
+  while (!(SPSR & (1 << SPIF)))
+    ;
 }
 
+// end of communication
 void SPI_master_EOC()
 {
   PORTE |= _BV(PE5);
-  _delay_ms(5);
+  _delay_us(1);
   PORTE &= ~_BV(PE5);
 }
