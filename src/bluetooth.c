@@ -16,10 +16,11 @@ void bluetooth_transmit_char(char data)
   USART_transmit(data);
 }
 
-void bluetooth_receive(char* buff)
+void bluetooth_receive(char *buff)
 {
   char c;
-  do {
+  do
+  {
     c = bluetooth_receive_char();
     *buff = c;
     buff++;
@@ -27,9 +28,10 @@ void bluetooth_receive(char* buff)
   *buff = '\0';
 }
 
-void bluetooth_transmit(char* data)
+void bluetooth_transmit(char *data)
 {
-  while(*data != '\0') {
+  while (*data != '\0')
+  {
     bluetooth_transmit_char(*data++);
   }
 }
