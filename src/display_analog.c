@@ -5,19 +5,58 @@
 
 #include "display_analog.h"
 
-// pos: 0 to 21600
+#define MINS_IN_A_DAY 1440
+// pos: 0 to 10800
 
+#ifndef COUNTERCLOCKWISE
 // clockwise
 int hour_to_pos(int h, int m)
 {
   int mins = h*60 + m;
-  char b[256];
-  sprintf(b, "1: %d %d %d\n", h, m, mins);
-  print(b);
-  return ((mins+720)%1440)*15; // clockwise 720 = 24*60 / 2, 15 = 21600/1440
+  // char b[256];
+  // sprintf(b, "1: %d %d %d\n", h, m, mins);
+  // print(b);
+  return ((mins+MINS_IN_A_DAY/2)%MINS_IN_A_DAY)*(POS_IN_A_TURN/MINS_IN_A_DAY); // clockwise
 }
 
-int m_to_p[60] = {10800, 11160, 11520, 11880, 12240, 12600, 12960, 13320, 13680, 14040, 14400, 14760, 15120, 15480, 15840, 16200, 16560, 16920, 17280, 17640, 18000, 18360, 18720, 19080, 19440, 19800, 20160, 20520, 20880, 21240, 0, 360, 720, 1080, 1440, 1800, 2160, 2520, 2880, 3240, 3600, 3960, 4320, 4680, 5040, 5400, 5760, 6120, 6480, 6840, 7200, 7560, 7920, 8280, 8640, 9000, 9360, 9720, 10080, 10440};
+// Array of the discreet hands positions.
+// It is precompiled and optimized so please dont freak out when seeing it as it is now
+int m_to_p[60] = {
+  ((POS_IN_A_TURN/60)*0+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*1+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*2+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*3+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*4+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*5+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*6+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*7+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*8+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/60)*9+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*10+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*11+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*12+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*13+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*14+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*15+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*16+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*17+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/60)*18+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*19+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*20+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*21+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*22+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*23+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*24+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*25+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*26+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/60)*27+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*28+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*29+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*30+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*31+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*32+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*33+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*34+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*35+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/60)*36+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*37+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*38+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*39+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*40+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*41+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*42+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*43+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*44+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/60)*45+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*46+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*47+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*48+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*49+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*50+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*51+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*52+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*53+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/60)*54+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*55+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*56+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*57+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*58+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*59+POS_IN_A_TURN/2)%POS_IN_A_TURN
+};
+#else
+// counterclockwise
+int hour_to_pos(int h, int m)
+{
+  int mins = h*60 + m;
+  // char b[256];
+  // sprintf(b, "1: %d %d %d\n", h, m, mins);
+  // print(b);
+  return POS_IN_A_TURN - ((mins+MINS_IN_A_DAY/2)%MINS_IN_A_DAY)*(POS_IN_A_TURN/MINS_IN_A_DAY); // clockwise
+}
+
+// Array of the discreet hands positions.
+// It is precompiled and optimized so please dont freak out when seeing it as it is now
+int m_to_p[60] = {
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*0+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*1+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*2+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*3+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*4+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*5+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*6+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*7+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*8+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*9+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*10+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*11+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*12+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*13+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*14+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*15+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*16+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*17+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*18+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*19+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*20+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*21+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*22+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*23+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*24+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*25+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*26+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*27+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*28+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*29+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*30+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*31+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*32+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*33+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*34+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*35+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*36+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*37+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*38+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*39+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*40+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*41+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*42+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*43+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*44+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*45+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*46+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*47+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*48+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*49+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*50+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*51+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*52+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*53+POS_IN_A_TURN/2)%POS_IN_A_TURN),
+  POS_IN_A_TURN - (((POS_IN_A_TURN/60)*54+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*55+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*56+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*57+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*58+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*59+POS_IN_A_TURN/2)%POS_IN_A_TURN)
+};
+
+#endif
 
 int minute_to_pos(int m, int s)
 {
@@ -29,68 +68,42 @@ int seconds_to_pos(int s)
   return m_to_p[s];
 }
 
-int get_hands(int pos)
+// cw
+uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
 {
-  int leds = LEDS_OFF;
-  if(pos == hour_to_pos(hours, minutes))
+  uint16_t leds = LEDS_OFF;
+  if(pos == h_pos)
     leds |= HOUR_HAND;
-  if(pos == minute_to_pos(minutes, seconds))
+  if(pos == m_pos)
     leds |= MINUTE_HAND;
-  if((seconds < 30  &&  pos >= 10800 && pos <= seconds_to_pos(seconds))
-  || (seconds >= 30 && (pos >= 10800 || pos <= seconds_to_pos(seconds))))
+  #ifndef COUNTERCLOCKWISE
+  if((seconds < 30  &&  pos >= POS_IN_A_TURN/2 && pos <= s_pos)
+  || (seconds >= 30 && (pos >= POS_IN_A_TURN/2 || pos <= s_pos)))
+  #else
+  if((seconds < 30  &&  pos <= POS_IN_A_TURN/2 && pos >= s_pos)
+  || (seconds >= 30 && (pos <= POS_IN_A_TURN/2 || pos >= s_pos)))
+  #endif
     leds |= SECOND_HAND;
-  // if(pos == seconds_to_pos_ccw(seconds))
-  //   leds |= SECOND_HAND;
 
-  char b[256];
-  sprintf(b, "%02d:%02d:%02d\n%d %d %d\n%04x\n", hours, minutes, seconds, hour_to_pos(hours, minutes), minute_to_pos(minutes, seconds), seconds_to_pos(seconds), leds);
-  print(b);
+  // char b[256];
+  // sprintf(b, "%02d:%02d:%02d\n%d %d %d\n%04x\n", hours, minutes, seconds, hour_to_pos(hours, minutes), minute_to_pos(minutes, seconds), seconds_to_pos(seconds), leds);
+  // print(b);
   return leds;
 }
 
-// counterclockwise
-int hour_to_pos_ccw(int h, int m)
-{
-  int mins = h*60 + m;
-  return 21600 - ((mins+720)%1440)*15; // counterclockwise
-}
+uint16_t display[POS_IN_A_TURN];
 
- int m_to_p_ccw[60] = {10800, 10440, 10080, 9720, 9360, 9000, 8640, 8280, 7920, 7560, 7200, 6840, 6480, 6120, 5760, 5400, 5040, 4680, 4320, 3960, 3600, 3240, 2880, 2520, 2160, 1800, 1440, 1080, 720, 360, 21600, 21240, 20880, 20520, 20160, 19800, 19440, 19080, 18720, 18360, 18000, 17640, 17280, 16920, 16560, 16200, 15840, 15480, 15120, 14760, 14400, 14040, 13680, 13320, 12960, 12600, 12240, 11880, 11520, 11160};
-
-int minute_to_pos_ccw(int m, int s)
-{
-  return m_to_p_ccw[m];
-}
-
-int seconds_to_pos_ccw(int s)
-{
-  return m_to_p_ccw[s];
-}
-
-int get_hands_ccw(int pos)
-{
-  int leds = LEDS_OFF;
-  if(pos == hour_to_pos_ccw(hours, minutes))
-    leds |= HOUR_HAND;
-  if(pos == minute_to_pos_ccw(minutes, seconds))
-    leds |= MINUTE_HAND;
-  if((seconds < 30  &&  pos <= 10800 && pos >= seconds_to_pos(seconds))
-  || (seconds >= 30 && (pos <= 10800 || pos >= seconds_to_pos(seconds))))
-    leds |= SECOND_HAND;
-
-  // if(pos == seconds_to_pos_ccw(seconds))
-  //   leds |= SECOND_HAND;
-  return leds;
+void compute_display() {
+  int h_pos = hour_to_pos(hours, minutes);
+  int m_pos = minute_to_pos(minutes, seconds);
+  int s_pos = seconds_to_pos(seconds);
+  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
+    display[pos] = get_hands(pos, h_pos, m_pos, s_pos);
+  }
 }
 
 void display_strip()
 {
-  int leds = LEDS_OFF;
   int pos = get_arc_min();
-  if(rotate == CLOCKWISE){
-    leds_on(get_hands(pos));
-  }
-  else {
-    leds_on(get_hands_ccw(pos));
-  }
+  leds_on(display[pos]);
 }
