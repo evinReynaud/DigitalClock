@@ -55,8 +55,12 @@ int m_to_p[60] = {
   POS_IN_A_TURN - (((POS_IN_A_TURN/60)*48+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*49+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*50+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*51+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*52+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*53+POS_IN_A_TURN/2)%POS_IN_A_TURN),
   POS_IN_A_TURN - (((POS_IN_A_TURN/60)*54+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*55+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*56+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*57+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*58+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*59+POS_IN_A_TURN/2)%POS_IN_A_TURN)
 };
-
 #endif
+
+int hour_mark[12] = {
+  ((POS_IN_A_TURN/12)*0+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*1+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*2+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*3+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*4+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*5+POS_IN_A_TURN/2)%POS_IN_A_TURN,
+  ((POS_IN_A_TURN/12)*6+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*7+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*8+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*9+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*10+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*11+POS_IN_A_TURN/2)%POS_IN_A_TURN
+}
 
 int minute_to_pos(int m, int s)
 {
@@ -68,7 +72,6 @@ int seconds_to_pos(int s)
   return m_to_p[s];
 }
 
-// cw
 uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
 {
   uint16_t leds = LEDS_OFF;
@@ -91,15 +94,60 @@ uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
   return leds;
 }
 
-uint16_t display[POS_IN_A_TURN];
+uint16_t display[POS_IN_A_TURN]; // The array in which we store our led configs
+
+// The current position of the hands
+int h_pos = 0;
+int m_pos = 0;
+int s_pos = 0;
+
+void init_display() {
+  h_pos = hour_to_pos(0, 0);
+  m_pos = minute_to_pos(0, 0);
+  s_pos = seconds_to_pos(0);
+  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
+    display[pos] = NO_HAND;
+  }
+  for(int h = 0; h < 12) {
+    display[hour_mark[h]] |= HOUR_MARK;
+  }
+  display[h_pos] |= HOUR_HAND;
+  display[m_pos] |= MINUTE_HAND;
+  display[s_pos] |= SECOND_HAND;
+}
+
+// void compute_display_slow() {
+//   h_pos = hour_to_pos(hours, minutes);
+//   m_pos = minute_to_pos(minutes, seconds);
+//   s_pos = seconds_to_pos(seconds);
+//   for(int pos = 0; pos < POS_IN_A_TURN; pos++){
+//     uint16_t leds = get_hands(pos, h_pos, m_pos, s_pos);
+//     if(display[pos] != leds)
+//       display[pos] = leds;
+//   }
+// }
 
 void compute_display() {
-  int h_pos = hour_to_pos(hours, minutes);
-  int m_pos = minute_to_pos(minutes, seconds);
-  int s_pos = seconds_to_pos(seconds);
-  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
-    display[pos] = get_hands(pos, h_pos, m_pos, s_pos);
+  // Remove the hour and minute hands
+  display[h_pos] &= ~(HOUR_HAND);
+  display[m_pos] &= ~(MINUTE_HAND);
+  // display[s_pos] &= ~(SECOND_HAND); // We do NOT reset the seconds every second
+  if(seconds == 0){ // Reset the seconds
+    for(int pos = seconds_to_pos(1); pos < POS_IN_A_TURN; pos++){
+      display[pos] &= ~(SECOND_HAND);
+    }
   }
+
+  h_pos = hour_to_pos(hours, minutes);
+  m_pos = minute_to_pos(minutes, seconds);
+  int new_s_pos = seconds_to_pos(seconds);
+
+  display[h_pos] |= HOUR_HAND;
+  display[m_pos] |= MINUTE_HAND;
+  for(int pos = s_pos; pos <= new_s_pos; pos++){
+    display[pos] |= SECOND_HAND;
+  }
+  s_pos = new_s_pos;
 }
 
 void display_strip()
