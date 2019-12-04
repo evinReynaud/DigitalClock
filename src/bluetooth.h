@@ -3,7 +3,9 @@
 
 void bluetooth_init();
 
-void bluetooth_receive(char *buff);
+void bluetooth_wait_for_data(char* buff);
+
+void bluetooth_fetch_data(char* buff);
 
 void bluetooth_transmit(char *data);
 
