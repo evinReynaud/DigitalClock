@@ -4,7 +4,7 @@
 #include "timer.h"
 #include "clock.h"
 
-void main()
+int main()
 {
   timer_init();
   bluetooth_init();
@@ -16,4 +16,5 @@ void main()
     interface();
     update_hour();
   }
+  return 0;
 }

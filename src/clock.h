@@ -2,9 +2,9 @@
 #define __CLOCK_H__
 #include <stdint.h>
 
-int8_t extern minutes;
-int8_t extern hours;
-volatile uint8_t extern seconds;
+extern int8_t hours;
+extern int8_t minutes;
+extern volatile uint8_t seconds;
 
 void update_hour();
 
