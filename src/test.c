@@ -20,7 +20,7 @@ int get_arc_min()
 void get_values()
 {
   char b[256];
-  bluetooth_receive(b);
+  bluetooth_wait_for_data(b);
   char h[3] = {b[0], b[1], '\n'};
   char m[3] = {b[3], b[4], '\n'};
   char s[3] = {b[6], b[7], '\n'};
