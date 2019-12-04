@@ -10,7 +10,7 @@
 
 #ifndef COUNTERCLOCKWISE
 // clockwise
-int hour_to_pos(int h, int m)
+inline int hour_to_pos(int h, int m)
 {
   int mins = h*60 + m;
   // char b[256];
@@ -32,7 +32,7 @@ int m_to_p[60] = {
 };
 #else
 // counterclockwise
-int hour_to_pos(int h, int m)
+inline int hour_to_pos(int h, int m)
 {
   int mins = h*60 + m;
   // char b[256];
