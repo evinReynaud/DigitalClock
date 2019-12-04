@@ -20,7 +20,7 @@ void timer_start(void)
     TIMSK |= _BV(TOIE1); /* enable overflow interrupt pour le timer 1  */
     TCCR1B |= _BV(CS11); /* prescaler: 8 */
     time_count = 1000;   // on a une interruption toutes les ms donc on a besoin de 1000 interruptions pour avoir 1s
-    secondes = 0;
+    seconds = 0;
 }
 
 void timer_stop(void)
@@ -36,6 +36,6 @@ ISR(TIMER1_OVF_vect) /* timer 1 interrupt service routine */
     {
         // Il s'est écoulé une seconde j'incrémente d'une seconde.
         time_count = 1000;
-        secondes = (secondes + 1) % 60;
+        seconds = (seconds + 1) % 60;
     }
 }

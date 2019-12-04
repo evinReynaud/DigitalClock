@@ -27,7 +27,6 @@ uint8_t chartoi(char c)
 
 void interface()
 {
-
     char data[256];
     bluetooth_fetch_data(data);
     if (strlen(data) == 0)
@@ -44,7 +43,8 @@ void interface()
         {
             minutes = 59;
         }
-        // ajouter le code permettant d'affecter les valeurs
+
+        seconds = 0;
     }
 
     if (data[0] == 'I')

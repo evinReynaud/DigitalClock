@@ -2,7 +2,7 @@
 #define __TIMER_H__
 
 volatile uint16_t time_count;
-volatile uint8_t secondes;
+volatile uint8_t seconds;
 
 void timer_init();
 
