@@ -1,41 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "usart.h"
 #include "bluetooth.h"
 #include "interface.h"
+#include "clock.h"
 
 void send_info()
 {
     char data[256];
-    sprintf(data, "send H to change hour\n");
+    sprintf(data, "send H_hhmm to change hour\n");
     bluetooth_transmit(data);
-    sprintf(data, "send M to change mode\n");
-    bluetooth_transmit(data);
-    sprintf(data, "send C to specify the clockwise\n"); // direction de l'aiguille
-    bluetooth_transmit(data);
+    //sprintf(data, "send M_n  with n=1,2,3 to change mode\n");
+    //bluetooth_transmit(data);
+}
+
+uint8_t chartoi(char c)
+{
+
+    char stTemp[2];
+    uint8_t ctoi;
+    sprintf(stTemp, "%c", c);
+    ctoi = atoi(stTemp);
+    return ctoi;
 }
 
 void interface()
 {
-    if (bluetooth_receive_char() == 'H')
+
+    char data[256];
+    bluetooth_receive(data);
+    if (data[0] == 'H')
     {
-        char data[256];
-        sprintf(data, "waiting for hour format: hhmmss\n");
-        bluetooth_transmit(data);
+        hours = chartoi(data[2]) * 10 + chartoi(data[3]);
+        minutes = chartoi(data[4]) * 10 + chartoi(data[5]);
+        if (hours > 12)
+        {
+            hours = 12;
+        }
+        if (minutes > 59)
+        {
+            minutes = 59;
+        }
         // ajouter le code permettant d'affecter les valeurs
     }
 
-    if (bluetooth_receive_char() == 'M')
+    if (data[0] == 'I')
     {
-        char data[256];
-        sprintf(data, "waiting for a mode: 1, 2 or 3\n");
-        bluetooth_transmit(data);
-        // ajouter le code permettant d'affecter les valeurs
+        send_info();
     }
 
-    if (bluetooth_receive_char() == 'C')
-    {
-        char data[256];
-        sprintf(data, "waiting for clockwise: 0 or 1\n"); // pour que la personne puisse dire si l'aiguille tourne dans le sens des aiguilles d'une montre ou non
-        bluetooth_transmit(data);
-        // ajouter le code permettant d'affecter les valeurs
-    }
+    //if (data[0] == 'M')
+    //{
+    //    mode = atoi(data[2]);
+    // ajouter le code permettant d'affecter les valeurs
+    //}
 }
