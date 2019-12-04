@@ -30,7 +30,6 @@ void interface()
 
     char data[256];
     bluetooth_fetch_data(data);
-
     if (strlen(data) == 0)
         return;
     if (data[0] == 'H')
