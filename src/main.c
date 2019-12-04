@@ -2,7 +2,7 @@
 #include "bluetooth.h"
 #include "leds_control.h"
 
-void main(void)
+int main(void)
 {
   leds_init();
   bluetooth_init();
@@ -10,4 +10,5 @@ void main(void)
   {
     leds_control();
   }
+  return 0;
 }
