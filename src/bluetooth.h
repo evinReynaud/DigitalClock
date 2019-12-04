@@ -3,11 +3,18 @@
 
 #define TRUE 1
 #define FALSE 0
+#include <stdint.h>
+#include <stdio.h>
 
 void bluetooth_init();
 
 void bluetooth_receive(char *buff);
 
 void bluetooth_transmit(char *data);
+void bluetooth_transmit_char(char data);
 
+void bluetooth_transmit_uint16(uint32_t i);
+
+
+void bluetooth_ln() ;
 #endif
