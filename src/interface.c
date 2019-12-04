@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "usart.h"
 #include "bluetooth.h"
 #include "interface.h"
@@ -28,7 +29,10 @@ void interface()
 {
 
     char data[256];
-    bluetooth_receive(data);
+    bluetooth_fetch_data(data);
+
+    if (strlen(data) == 0)
+        return;
     if (data[0] == 'H')
     {
         hours = chartoi(data[2]) * 10 + chartoi(data[3]);

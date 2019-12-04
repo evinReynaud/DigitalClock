@@ -1,11 +1,10 @@
-#include "leds.h"
 #include "bluetooth.h"
 #include "leds_control.h"
 #include "interface.h"
 #include "timer.h"
 #include "clock.h"
 
-void main(void)
+void main()
 {
   timer_init();
   bluetooth_init();

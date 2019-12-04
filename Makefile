@@ -7,7 +7,7 @@ build:
 	avr-objcopy -O binary bin/a.out bin/a.bin
 
 install:
-	avrdude -c jtagmkI -P /dev/ttyUSB0 -p m128 -U flash:w:bin/a.bin:r
+	avrdude -c jtagmkI -P /dev/ttyS7 -p m128 -U flash:w:bin/a.bin:r
 
 .PHONY: clean, cleanall
 clean:
