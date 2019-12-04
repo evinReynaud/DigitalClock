@@ -1,6 +1,8 @@
 #include <stdio.h>
 
 #include "leds.h"
+#include "clock.h"
+
 #include "test.h"
 
 #include "display_analog.h"

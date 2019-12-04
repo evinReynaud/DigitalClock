@@ -27,7 +27,7 @@ uint8_t chartoi(char c)
 
 void interface()
 {
-    char data[256];
+    char data[256]; // TODO: Optimize by making it global
     bluetooth_fetch_data(data);
     if (strlen(data) == 0)
         return;
