@@ -8,7 +8,7 @@
 void leds_control()
 {
   char buffer[256];
-  bluetooth_receive(buffer);
+  bluetooth_wait_for_data(buffer);
   int num;
   if (strlen(buffer) >= 16)
     num = (int)strtol(buffer, NULL, 2);
