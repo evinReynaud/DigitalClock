@@ -28,7 +28,7 @@ char USART_fetch()
     // Get and return received data from buffer
     return UDR0;
   }
-  return "\n";
+  return '\n';
 }
 
 void USART_transmit(char data)
