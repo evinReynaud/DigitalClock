@@ -17,7 +17,6 @@ void send_info()
 
 uint8_t chartoi(char c)
 {
-
     char stTemp[2];
     uint8_t ctoi;
     sprintf(stTemp, "%c", c);
@@ -29,6 +28,7 @@ void interface()
 {
     char data[256];
     bluetooth_fetch_data(data);
+
     if (strlen(data) == 0)
         return;
     if (data[0] == 'H')
