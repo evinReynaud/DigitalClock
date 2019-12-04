@@ -7,19 +7,19 @@
 char minute_change = 0;
 char hour_change = 0;
 char send = 0;
-uint8_t check_secondes = 0;
+uint8_t check_seconds = 0;
 int8_t minutes = -1;
 int8_t hours = -1;
 
 void update_hour()
 {
 
-    if (secondes == 0 && minute_change == 0)
+    if (seconds == 0 && minute_change == 0)
     {
         minutes = (minutes + 1) % 60;
         minute_change = 1;
     }
-    if (secondes == 1)
+    if (seconds == 1)
     {
         minute_change = 0;
     }
@@ -33,11 +33,11 @@ void update_hour()
         hour_change = 0;
     }
 
-    if (check_secondes != secondes && send == 0)
+    if (check_seconds != seconds && send == 0)
     {
-        check_secondes = secondes;
+        check_seconds = seconds;
         char data_time[256];
-        sprintf(data_time, "%d : %d: %d\n", hours, minutes, secondes);
+        sprintf(data_time, "%d : %d: %d\n", hours, minutes, seconds);
         bluetooth_transmit(data_time);
         send = 1;
     }
