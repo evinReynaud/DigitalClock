@@ -60,17 +60,19 @@ int m_to_p[60] = {
 int hour_mark[12] = {
   ((POS_IN_A_TURN/12)*0+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*1+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*2+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*3+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*4+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*5+POS_IN_A_TURN/2)%POS_IN_A_TURN,
   ((POS_IN_A_TURN/12)*6+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*7+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*8+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*9+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*10+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/12)*11+POS_IN_A_TURN/2)%POS_IN_A_TURN
-}
+};
 
-int minute_to_pos(int m, int s)
-{
-  return m_to_p[m];
-}
-
-int seconds_to_pos(int s)
-{
-  return m_to_p[s];
-}
+#define minute_to_pos(M, S) m_to_p[(M)]
+#define seconds_to_pos(S) m_to_p[(S)]
+// int minute_to_pos(int m, int s)
+// {
+//   return m_to_p[m];
+// }
+//
+// int seconds_to_pos(int s)
+// {
+//   return m_to_p[s];
+// }
 
 uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
 {
@@ -108,7 +110,7 @@ void init_display() {
   for(int pos = 0; pos < POS_IN_A_TURN; pos++){
     display[pos] = NO_HAND;
   }
-  for(int h = 0; h < 12) {
+  for(int h = 0; h < 12; h++) {
     display[hour_mark[h]] |= HOUR_MARK;
   }
   display[h_pos] |= HOUR_HAND;
