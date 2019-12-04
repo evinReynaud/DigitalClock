@@ -6,12 +6,12 @@ void bluetooth_init()
   USART_init(MYUBRR);
 }
 
-char inline bluetooth_receive_char()
+inline char bluetooth_receive_char()
 {
   return USART_receive();
 }
 
-char inline bluetooth_fetch_char()
+inline char bluetooth_fetch_char()
 {
   return USART_fetch();
 }

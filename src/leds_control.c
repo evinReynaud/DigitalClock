@@ -14,8 +14,6 @@ void leds_control()
     num = (int)strtol(buffer, NULL, 2);
   else
     num = (int)strtol(buffer, NULL, 16);
-  char c1 = (char)(num >> 8);
-  char c2 = (char)num;
   leds_on(num);
   bluetooth_transmit(buffer);
 }
