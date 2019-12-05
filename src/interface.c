@@ -41,7 +41,7 @@ void interface()
         if (strlen(data) == 0)
             return;
 
-        bluetooth_transmit(data);
+        //bluetooth_transmit(data);
 
         if (data[0] == 'H')
         {
@@ -58,6 +58,8 @@ void interface()
             }
 
             seconds = 0;
+            sprintf(data, ".. Hour changed ..\n");
+            bluetooth_transmit(data);
         }
 
         if (data[0] == 'I')

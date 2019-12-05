@@ -9,10 +9,6 @@ void USART_init(unsigned int ubrr);
 
 char USART_receive();
 
-char USART_receive_interrupt();
-
-char USART_fetch();
-
 void USART_transmit(char data);
 
 #endif

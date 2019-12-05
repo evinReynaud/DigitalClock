@@ -22,23 +22,6 @@ char USART_receive()
   return UDR0;
 }
 
-char USART_receive_interrupt()
-{
-  // Get and return received data from buffer
-  return UDR0;
-}
-
-char USART_fetch()
-{
-  // Wait for data to be received
-  if (!(UCSR0A & (1 << RXC0)))
-  {
-    // Get and return received data from buffer
-    return '\n';
-  }
-  return UDR0;
-}
-
 void USART_transmit(char data)
 {
   // Wait for empty transmit buffer
