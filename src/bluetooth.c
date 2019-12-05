@@ -51,3 +51,17 @@ void bluetooth_transmit(char* data)
     bluetooth_transmit_char(*data++);
   }
 }
+
+
+
+void bluetooth_transmit_uint16(uint32_t i) {
+  char buffer[16];
+  sprintf(buffer, "%lu", i);
+  bluetooth_transmit(buffer);
+}
+
+
+void bluetooth_ln() {
+  bluetooth_transmit_char('\r');
+  bluetooth_transmit_char('\n');
+}

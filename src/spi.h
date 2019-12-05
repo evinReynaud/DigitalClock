@@ -3,7 +3,7 @@
 
 void SPI_master_init();
 
-void SPI_master_transmit(char cData);
+void SPI_master_transmit_char(char cData);
 
 void SPI_master_EOC();
 
