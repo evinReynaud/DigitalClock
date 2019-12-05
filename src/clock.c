@@ -33,16 +33,16 @@ void update_hour()
         hour_change = 0;
     }
 
-    if (check_seconds != seconds && send == 0)
-    {
-        check_seconds = seconds;
-        char data_time[256];
-        sprintf(data_time, "%d : %d: %d\n", hours, minutes, seconds);
-        bluetooth_transmit(data_time);
-        send = 1;
-    }
-    else
-    {
-        send = 0;
-    }
+    // if (check_seconds != seconds && send == 0)
+    // {
+    //     check_seconds = seconds;
+    //     char data_time[256];
+    //     sprintf(data_time, "%d : %d: %d\n", hours, minutes, seconds);
+    //     bluetooth_transmit(data_time);
+    //     send = 1;
+    // }
+    // else
+    // {
+    //     send = 0;
+    // }
 }

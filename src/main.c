@@ -15,7 +15,7 @@ int main()
   while (TRUE)
   {
     interface();
-    //update_hour();
+    update_hour();
   }
   return 0;
 }

@@ -36,42 +36,34 @@ void interface()
 {
     if (data_receive)
     {
-        char buff[256];
-        //bluetooth_wait_for_data_interrupt(data);
-        //if (strlen(data) == 0)
-        //return;
+        char data[256];
+        bluetooth_wait_for_data(data);
+        if (strlen(data) == 0)
+            return;
 
-        //bluetooth_transmit(data);
-        char c;
-        do
+        bluetooth_transmit(data);
+
+        if (data[0] == 'H')
         {
-            c = UDR0;
-            *buff = c;
-            buff++;
-        } while (c != '\n');
-        *buff = '\0';
 
-        // if (UDR0 == 'H')
-        // {
+            hours = chartoi(data[2]) * 10 + chartoi(data[3]);
+            minutes = chartoi(data[4]) * 10 + chartoi(data[5]) - 1;
+            if (hours > 23)
+            {
+                hours = 23;
+            }
+            if (minutes > 59)
+            {
+                minutes = 59;
+            }
 
-        //     hours = chartoi(data[2]) * 10 + chartoi(data[3]);
-        //     minutes = chartoi(data[4]) * 10 + chartoi(data[5]);
-        //     if (hours > 23)
-        //     {
-        //         hours = 23;
-        //     }
-        //     if (minutes > 59)
-        //     {
-        //         minutes = 59;
-        //     }
+            seconds = 0;
+        }
 
-        //     seconds = 0;
-        // }
-
-        //if (data[0] == 'I')
-        //{
-        //    send_info();
-        //}
+        if (data[0] == 'I')
+        {
+            send_info();
+        }
 
         //if (data[0] == 'M')
         //{
@@ -79,11 +71,14 @@ void interface()
         // ajouter le code permettant d'affecter les valeurs
         //}
 
-        data_receive = 0;
+        data_receive = FALSE;
     }
 }
 
 ISR(USART0_RX_vect) /* timer 1 interrupt service routine */
 {
-    data_receive = 1;
+    if (!data_receive)
+    {
+        data_receive = TRUE;
+    }
 }
