@@ -67,6 +67,13 @@ void SPI_master_transmit(uint16_t data)
 }
 
 
+int getPos(void)
+{
+    TIM16_ReadTCNT3();
+    if(countPerTour!=0) return (int)(TCNT3*POS_IN_A_TOUR/countPerTour));
+}
+
+
 
 void test_effethall()
 {
@@ -99,13 +106,14 @@ void test_effethall()
 
       }
 
-
-
-      if( TCNT3 > time + 120)
+      //etat = 0;
+      //follow = 0;
+      if( TCNT3 > 100)
       {
         etat = 0;
         follow = 0;
       }
+
       //bluetooth_transmit_uint16(countIe);
       //countIe =0;
       //bluetooth_ln();
