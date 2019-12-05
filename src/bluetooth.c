@@ -11,6 +11,11 @@ inline char bluetooth_receive_char()
   return USART_receive();
 }
 
+inline char bluetooth_receive_char_interrupt()
+{
+  return USART_receive_interrupt();
+}
+
 inline char bluetooth_fetch_char()
 {
   return USART_fetch();
@@ -21,7 +26,7 @@ void bluetooth_transmit_char(char data)
   USART_transmit(data);
 }
 
-void bluetooth_wait_for_data(char* buff)
+void bluetooth_wait_for_data(char *buff)
 {
   char c;
   do
@@ -33,10 +38,23 @@ void bluetooth_wait_for_data(char* buff)
   *buff = '\0';
 }
 
-void bluetooth_fetch_data(char* buff)
+void bluetooth_wait_for_data_interrupt(char *buff)
 {
   char c;
-  do {
+  do
+  {
+    c = bluetooth_receive_char_interrupt();
+    *buff = c;
+    buff++;
+  } while (c != '\n');
+  *buff = '\0';
+}
+
+void bluetooth_fetch_data(char *buff)
+{
+  char c;
+  do
+  {
     c = bluetooth_fetch_char();
     *buff = c;
     buff++;
@@ -44,7 +62,7 @@ void bluetooth_fetch_data(char* buff)
   *buff = '\0';
 }
 
-void bluetooth_transmit(char* data)
+void bluetooth_transmit(char *data)
 {
   while (*data != '\0')
   {

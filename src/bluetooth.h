@@ -6,10 +6,13 @@
 
 void bluetooth_init();
 
-void bluetooth_wait_for_data(char* buff);
+void bluetooth_wait_for_data(char *buff);
 
-void bluetooth_fetch_data(char* buff);
+void bluetooth_wait_for_data_interrupt(char *buff);
+
+void bluetooth_fetch_data(char *buff);
 
 void bluetooth_transmit(char *data);
+void bluetooth_transmit_char(char data);
 
 #endif

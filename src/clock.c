@@ -8,8 +8,8 @@ char minute_change = 0;
 char hour_change = 0;
 char send = 0;
 uint8_t check_seconds = 0;
-int8_t minutes = -1;
-int8_t hours = -1;
+volatile int8_t minutes = -1;
+volatile int8_t hours = -1;
 
 void update_hour()
 {

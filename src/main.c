@@ -10,11 +10,12 @@ int main()
   bluetooth_init();
   timer_start();
   send_info();
+  interface_interrupt_init();
 
   while (TRUE)
   {
     interface();
-    update_hour();
+    //update_hour();
   }
   return 0;
 }

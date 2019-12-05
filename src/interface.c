@@ -6,6 +6,8 @@
 #include "interface.h"
 #include "clock.h"
 
+volatile int data_receive = 0;
+
 void send_info()
 {
     char data[256];
@@ -13,6 +15,12 @@ void send_info()
     bluetooth_transmit(data);
     //sprintf(data, "send M_n  with n=1,2,3 to change mode\n");
     //bluetooth_transmit(data);
+}
+
+void interface_interrupt_init(void)
+{
+    sei();
+    UCSR0B |= _BV(RXCIE0);
 }
 
 uint8_t chartoi(char c)
@@ -26,35 +34,56 @@ uint8_t chartoi(char c)
 
 void interface()
 {
-    char data[256];
-    bluetooth_fetch_data(data);
-
-    if (strlen(data) == 0)
-        return;
-    if (data[0] == 'H')
+    if (data_receive)
     {
-        hours = chartoi(data[2]) * 10 + chartoi(data[3]);
-        minutes = chartoi(data[4]) * 10 + chartoi(data[5]);
-        if (hours > 12)
+        char buff[256];
+        //bluetooth_wait_for_data_interrupt(data);
+        //if (strlen(data) == 0)
+        //return;
+
+        //bluetooth_transmit(data);
+        char c;
+        do
         {
-            hours = 12;
-        }
-        if (minutes > 59)
-        {
-            minutes = 59;
-        }
+            c = UDR0;
+            *buff = c;
+            buff++;
+        } while (c != '\n');
+        *buff = '\0';
 
-        seconds = 0;
+        // if (UDR0 == 'H')
+        // {
+
+        //     hours = chartoi(data[2]) * 10 + chartoi(data[3]);
+        //     minutes = chartoi(data[4]) * 10 + chartoi(data[5]);
+        //     if (hours > 23)
+        //     {
+        //         hours = 23;
+        //     }
+        //     if (minutes > 59)
+        //     {
+        //         minutes = 59;
+        //     }
+
+        //     seconds = 0;
+        // }
+
+        //if (data[0] == 'I')
+        //{
+        //    send_info();
+        //}
+
+        //if (data[0] == 'M')
+        //{
+        //    mode = atoi(data[2]);
+        // ajouter le code permettant d'affecter les valeurs
+        //}
+
+        data_receive = 0;
     }
+}
 
-    if (data[0] == 'I')
-    {
-        send_info();
-    }
-
-    //if (data[0] == 'M')
-    //{
-    //    mode = atoi(data[2]);
-    // ajouter le code permettant d'affecter les valeurs
-    //}
+ISR(USART0_RX_vect) /* timer 1 interrupt service routine */
+{
+    data_receive = 1;
 }
