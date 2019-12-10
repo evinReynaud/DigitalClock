@@ -1,9 +1,10 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-//#include "spi.h"
-
 #include "effethall.h"
+
+volatile int etat = 0;
+int follow = 0;
 
 ISR(INT0_vect)
 {
@@ -19,19 +20,16 @@ void effethall_init()
   EIMSK |= (1 << INT0);
 }
 
-void check_effethall()
+void check_effethall(void (*treatment)(), uint16_t timer)
 {
-  if( etat == 1)
+  if(etat == 1)
   {
     if(follow == 0)
     {
       follow = 1;
-      TIM16_ReadTCNT3();
-      //bluetooth_transmit_uint16(countPerTour);
-      TIM16_WriteTCNT3(0);
-      //bluetooth_ln();
+      (*treatment)();
     }
-    if( TCNT3 > 100)
+    if(timer > 100)
     {
       etat = 0;
       follow = 0;

@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
+#include <stdint.h>
 
 //LE=PE5
 //OE=PE4
@@ -21,6 +22,20 @@ void SPI_master_transmit_char(char cData)
   SPDR = cData;
   /* Wait for transmission complete */
   while (!(SPSR & (1 << SPIF)));
+}
+
+void SPI_master_transmit(uint16_t data)
+{
+    char c1 = (char)(data >> 8);
+    char c2 = (char)data;
+    _delay_us(1);
+    SPI_master_transmit_char(c1);
+    SPI_master_transmit_char(c2);
+    _delay_us(5);
+    PORTE |= _BV(PE5);
+    _delay_us(5);
+    PORTE &= ~_BV(PE5);
+    _delay_us(5);
 }
 
 // end of communication

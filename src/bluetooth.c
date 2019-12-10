@@ -53,8 +53,8 @@ void bluetooth_transmit(char* data)
 
 
 void bluetooth_transmit_uint16(uint32_t i) {
-  uint8_t buffer[16];
-  sprintf(buffer, "%u", i);
+  char buffer[16];
+  sprintf(buffer, "%lu", i);
   bluetooth_transmit(buffer);
 }
 
