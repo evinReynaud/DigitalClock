@@ -26,11 +26,16 @@ void bluetooth_wait_for_data(char* buff)
   char c;
   do
   {
+    bluetooth_transmit("DEBUG: A\n");
     c = bluetooth_receive_char();
+    bluetooth_transmit("DEBUG: B\n");
     *buff = c;
     buff++;
+    bluetooth_transmit("DEBUG: C\n");
   } while (c != '\n');
+  bluetooth_transmit("DEBUG: D\n");
   *buff = '\0';
+  bluetooth_transmit("DEBUG: E\n");
 }
 
 void bluetooth_fetch_data(char* buff)

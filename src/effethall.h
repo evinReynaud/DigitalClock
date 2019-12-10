@@ -4,9 +4,6 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-#define TRUE 1
-#define FALSE 0
-
 void effethall_init();
 void check_effet_hall();
 

@@ -1,9 +1,9 @@
-
-
 #include "position.h"
+
 volatile  uint16_t countPerTour = 1;
 volatile int etat =0;
 volatile int follow = 0;
+
 void timer_init_postion(void)
 {
     /* normal mode */
