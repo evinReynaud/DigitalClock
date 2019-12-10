@@ -1,10 +1,10 @@
 #ifndef __EFFETHALL_H__
 #define __EFFETHALL_H__
 
-#include <avr/interrupt.h>
-#include <avr/io.h>
+#include <stdint.h>
 
 void effethall_init();
-void check_effet_hall();
+
+void check_effethall(void (*treatment)(), uint16_t timer);
 
 #endif

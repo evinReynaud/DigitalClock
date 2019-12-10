@@ -4,7 +4,6 @@
 #include "clock.h"
 #include "interface.h"
 #include "position.h"
-#include "effethall.h"
 
 #include "debug.h"
 
