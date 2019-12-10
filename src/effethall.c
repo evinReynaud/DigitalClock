@@ -29,7 +29,7 @@ void check_effethall(void (*treatment)(), uint16_t timer)
       follow = 1;
       (*treatment)();
     }
-    if(timer > 100)
+    else if(timer > 10)
     {
       etat = 0;
       follow = 0;

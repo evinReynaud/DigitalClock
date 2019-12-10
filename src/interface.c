@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "usart.h"
 #include "bluetooth.h"
-#include "interface.h"
 #include "clock.h"
+#include "position.h"
 
-volatile int data_receive = 0;
+#include "interface.h"
+
+volatile int data_received = 0;
+int reset = 0;
 
 void send_info()
 {
@@ -34,7 +38,7 @@ uint8_t chartoi(char c)
 
 void interface()
 {
-    if (data_receive)
+    if (data_received)
     {
         char data[256];
         bluetooth_wait_for_data(data);
@@ -45,7 +49,6 @@ void interface()
 
         if (data[0] == 'H')
         {
-
             hours = chartoi(data[2]) * 10 + chartoi(data[3]);
             minutes = chartoi(data[4]) * 10 + chartoi(data[5]) - 1;
             if (hours > 23)
@@ -67,20 +70,35 @@ void interface()
             send_info();
         }
 
+        if (data[0] == 'r')
+        {
+          reset = 1;
+        }
+
+        if (data[0] == 'R')
+        {
+          reset = 2;
+        }
+
+        if (data[0] == 'F')
+        {
+          force_hall = 1;
+        }
+
         //if (data[0] == 'M')
         //{
         //    mode = atoi(data[2]);
         // ajouter le code permettant d'affecter les valeurs
         //}
 
-        data_receive = FALSE;
+        data_received = FALSE;
     }
 }
 
 ISR(USART0_RX_vect) /* timer 1 interrupt service routine */
 {
-    if (!data_receive)
+    if (!data_received)
     {
-        data_receive = TRUE;
+        data_received = TRUE;
     }
 }

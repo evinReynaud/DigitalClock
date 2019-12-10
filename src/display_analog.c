@@ -2,8 +2,9 @@
 
 #include "leds.h"
 #include "clock.h"
+#include "position.h"
 
-#include "test.h"
+#include "debug.h"
 
 #include "display_analog.h"
 
@@ -105,19 +106,44 @@ int h_pos = 0;
 int m_pos = 0;
 int s_pos = 0;
 
-void init_display() {
-  h_pos = hour_to_pos(0, 0);
-  m_pos = minute_to_pos(0, 0);
-  s_pos = seconds_to_pos(0);
+void debug_show_array(){
+  char b[16];
+  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
+    if(display[pos] != 0){
+      sprintf(b, "%03d: %x\n", pos, display[pos]);
+      debug_printf(b);
+    }
+  }
+}
+
+inline void init_display_array(){
   for(int pos = 0; pos < POS_IN_A_TURN; pos++){
     display[pos] = NO_HAND;
   }
+}
+
+void init_display(){
+  h_pos = hour_to_pos(0, 0);
+  m_pos = minute_to_pos(0, 0);
+  s_pos = seconds_to_pos(0);
+
+  init_display_array();
+
   for(int h = 0; h < 12; h++) {
     display[hour_mark[h]] |= HOUR_MARK;
   }
+
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
   display[s_pos] |= SECOND_HAND;
+
+  // init_display_array();
+  // display[0] = LEDS_ON;
+  // display[POS_IN_A_TURN/4] = LEDS_ON;
+  // display[POS_IN_A_TURN/2] = LEDS_ON;
+  // display[3*POS_IN_A_TURN/4] = LEDS_ON;
+
+  debug_show_array();
 }
 
 // void compute_display_slow() {
@@ -156,6 +182,6 @@ void compute_display() {
 
 void display_strip()
 {
-  int pos = get_arc_min();
+  int pos = get_pos();
   leds_on(display[pos]);
 }

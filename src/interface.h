@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <avr/interrupt.h>
 
+extern int reset;
+
 void interface_interrupt_init(void);
 void send_info();
 uint8_t chartoi(char c);

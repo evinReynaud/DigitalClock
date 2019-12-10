@@ -1,8 +1,14 @@
 #include <stdio.h>
+
 #include "leds.h"
 #include "timer.h"
 #include "bluetooth.h"
+#include "display_analog.h"
+
+#include "debug.h"
+
 #include "clock.h"
+
 
 char minute_change = 0;
 char hour_change = 0;
@@ -33,16 +39,9 @@ void update_hour()
         hour_change = 0;
     }
 
-    if (check_seconds != seconds && send == 0)
+    if (check_seconds != seconds)
     {
         check_seconds = seconds;
-        //char data_time[256];
-        //sprintf(data_time, "%d : %d: %d\n", hours, minutes, seconds);
-        //bluetooth_transmit(data_time);
-        send = 1;
-    }
-    else
-    {
-        send = 0;
+        compute_display();
     }
 }
