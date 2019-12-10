@@ -6,9 +6,14 @@ void bluetooth_init()
   USART_init(MYUBRR);
 }
 
-char bluetooth_receive_char()
+inline char bluetooth_receive_char()
 {
   return USART_receive();
+}
+
+inline char bluetooth_fetch_char()
+{
+  return USART_fetch();
 }
 
 void bluetooth_transmit_char(char data)
@@ -16,11 +21,22 @@ void bluetooth_transmit_char(char data)
   USART_transmit(data);
 }
 
-void bluetooth_receive(char* buff)
+void bluetooth_wait_for_data(char* buff)
 {
   char c;
   do {
     c = bluetooth_receive_char();
+    *buff = c;
+    buff++;
+  } while (c != '\n');
+  *buff = '\0';
+}
+
+void bluetooth_fetch_data(char* buff)
+{
+  char c;
+  do {
+    c = bluetooth_fetch_char();
     *buff = c;
     buff++;
   } while (c != '\n');

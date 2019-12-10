@@ -4,7 +4,7 @@
 
 #include "effethall.h"
 
-void main()
+int main()
 {
   timer_init_postion();
   timer_start_position();
@@ -18,4 +18,5 @@ void main()
     bluetooth_ln();
     check_effethall();
   }
+  return 0;
 }

@@ -16,10 +16,19 @@ void USART_init(unsigned int ubrr)
 char USART_receive()
 {
   // Wait for data to be received
-  while (!(UCSR0A & (1 << RXC0)))
-    ;
+  while (!(UCSR0A & (1 << RXC0)));
   // Get and return received data from buffer
   return UDR0;
+}
+
+char USART_fetch()
+{
+  // Wait for data to be received
+  if (!(UCSR0A & (1 << RXC0))){
+    // Get and return received data from buffer
+    return UDR0;
+  }
+  return '\n';
 }
 
 void USART_transmit(char data)
