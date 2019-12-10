@@ -26,10 +26,9 @@ int main()
   while (1)
   {
     //leds_on(0xffff);
-    // interface();
-    // update_hour();
-    // display_strip();
-    // check_effet_hall();
+    interface();
+    update_hour();
+    display_strip();
   }
   return 0;
 }
