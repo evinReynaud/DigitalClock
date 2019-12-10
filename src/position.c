@@ -14,13 +14,9 @@
 
 #define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
 
-int force_hall = 0;
-
 inline int abs(int x) {
   return (x >= 0) ? x : -x;
 }
-
-uint16_t countPerTour = 1;
 
 void position_init()
 {
@@ -30,15 +26,15 @@ void position_init()
 }
 
 void func(){
-  uint16_t t = pos_timer_read();
-  pos_timer_write(1);
-  if(t > countPerTour/100 || force_hall){
-    countPerTour = t;
-    force_hall = 0;
-  }
-  char b[20];
-  sprintf(b, "%u\n", countPerTour);
-  debug_printf(b);
+//   uint16_t t = pos_timer_read();
+//   pos_timer_write(1);
+//   if(t > countPerTour/100 || force_hall){
+//     countPerTour = t;
+//     force_hall = 0;
+//   }
+//   char b[20];
+//   sprintf(b, "%u\n", countPerTour);
+//   debug_printf(b);
 }
 
 inline void check_pos(){

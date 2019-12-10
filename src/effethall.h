@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+extern volatile uint16_t countPerTour;
+extern volatile int force_hall;
+
 void effethall_init();
 
 void check_effethall(void (*treatment)(), uint16_t timer);
