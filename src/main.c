@@ -6,9 +6,10 @@
 
 int main()
 {
-  position_init();
   bluetooth_init();
+  position_init();
 
+  debug_printf("Init done\n");
   debug_wait_input();
 
   while (1)
