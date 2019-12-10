@@ -6,9 +6,6 @@
 
 void pos_timer_start()
 {
-  sei();
-  //OCR3  = 0xffffffffffffffff ; /* overflow in clock cycles */;
-  ETIMSK |= _BV(TOIE3); /* enable overflow interrupt */
   /* start timer clock */
   TCCR3B |= _BV(CS30)|_BV(CS32);
   //TCCR1B |= _BV(CS11); /* prescaler: 8 */
