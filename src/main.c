@@ -2,18 +2,7 @@
 
 #include "position.h"
 
-
-
-ISR(INT0_vect)
-{
-  etat = 1;
-}
-
-
-
-ISR(TIMER3_OVF_vect) /* timer 1 interrupt service routine */
-{
-}
+#include "effethall.h"
 
 void main()
 {
@@ -22,25 +11,11 @@ void main()
   bluetooth_init();
   effethall_init();
   SPI_master_init();
-  while (TRUE)
+
+  while (1)
   {
     bluetooth_transmit_uint16(getPos());
     bluetooth_ln();
-    if( etat == 1)
-    {
-      if(follow == 0)
-      {
-        follow = 1;
-        TIM16_ReadTCNT3();
-        //bluetooth_transmit_uint16(countPerTour);
-        TIM16_WriteTCNT3(0);
-        //bluetooth_ln();
-      }
-      if( TCNT3 > 100)
-      {
-        etat = 0;
-        follow = 0;
-      }
-    }
+    check_effethall();
   }
 }
