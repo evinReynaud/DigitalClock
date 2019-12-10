@@ -13,6 +13,9 @@ int main()
   debug_printf("Start init\n");
   position_init();
   leds_init();
+  timer_start();
+  send_info();
+  interface_interrupt_init();
 
   leds_on(0xffff);
 

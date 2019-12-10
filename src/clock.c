@@ -8,8 +8,8 @@ char minute_change = 0;
 char hour_change = 0;
 char send = 0;
 uint8_t check_seconds = 0;
-int8_t minutes = -1;
-int8_t hours = -1;
+volatile int8_t minutes = -1;
+volatile int8_t hours = -1;
 
 void update_hour()
 {
@@ -36,9 +36,9 @@ void update_hour()
     if (check_seconds != seconds && send == 0)
     {
         check_seconds = seconds;
-        char data_time[256];
-        sprintf(data_time, "%d : %d: %d\n", hours, minutes, seconds);
-        bluetooth_transmit(data_time);
+        //char data_time[256];
+        //sprintf(data_time, "%d : %d: %d\n", hours, minutes, seconds);
+        //bluetooth_transmit(data_time);
         send = 1;
     }
     else

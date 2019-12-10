@@ -6,6 +6,8 @@
 #include "interface.h"
 #include "clock.h"
 
+volatile int data_receive = 0;
+
 void send_info()
 {
     char data[256];
@@ -15,9 +17,14 @@ void send_info()
     //bluetooth_transmit(data);
 }
 
+void interface_interrupt_init(void)
+{
+    sei();
+    UCSR0B |= _BV(RXCIE0);
+}
+
 uint8_t chartoi(char c)
 {
-
     char stTemp[2];
     uint8_t ctoi;
     sprintf(stTemp, "%c", c);
@@ -27,34 +34,53 @@ uint8_t chartoi(char c)
 
 void interface()
 {
-    char data[256]; // TODO: Optimize by making it global
-    bluetooth_fetch_data(data);
-    if (strlen(data) == 0)
-        return;
-    if (data[0] == 'H')
+    if (data_receive)
     {
-        hours = chartoi(data[2]) * 10 + chartoi(data[3]);
-        minutes = chartoi(data[4]) * 10 + chartoi(data[5]);
-        if (hours > 12)
+        char data[256];
+        bluetooth_wait_for_data(data);
+        if (strlen(data) == 0)
+            return;
+
+        //bluetooth_transmit(data);
+
+        if (data[0] == 'H')
         {
-            hours = 12;
-        }
-        if (minutes > 59)
-        {
-            minutes = 59;
+
+            hours = chartoi(data[2]) * 10 + chartoi(data[3]);
+            minutes = chartoi(data[4]) * 10 + chartoi(data[5]) - 1;
+            if (hours > 23)
+            {
+                hours = 23;
+            }
+            if (minutes > 59)
+            {
+                minutes = 59;
+            }
+
+            seconds = 0;
+            sprintf(data, ".. Hour changed ..\n");
+            bluetooth_transmit(data);
         }
 
-        seconds = 0;
+        if (data[0] == 'I')
+        {
+            send_info();
+        }
+
+        //if (data[0] == 'M')
+        //{
+        //    mode = atoi(data[2]);
+        // ajouter le code permettant d'affecter les valeurs
+        //}
+
+        data_receive = FALSE;
     }
+}
 
-    if (data[0] == 'I')
+ISR(USART0_RX_vect) /* timer 1 interrupt service routine */
+{
+    if (!data_receive)
     {
-        send_info();
+        data_receive = TRUE;
     }
-
-    //if (data[0] == 'M')
-    //{
-    //    mode = atoi(data[2]);
-    // ajouter le code permettant d'affecter les valeurs
-    //}
 }
