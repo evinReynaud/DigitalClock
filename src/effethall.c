@@ -3,15 +3,6 @@
 
 #include "effethall.h"
 
-ISR(INT0_vect)
-{
-  etat = 1;
-}
-
-// ISR(TIMER3_OVF_vect) /* timer 1 interrupt service routine */
-// {
-// }
-
 volatile int etat = 0;
 int follow = 0;
 

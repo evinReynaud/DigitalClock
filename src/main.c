@@ -11,10 +11,8 @@ int main()
 {
   bluetooth_init();
   debug_printf("Start init\n");
-  timer_init_postion();
-  timer_start_position();
-  effethall_init();
-  SPI_master_init();
+  position_init();
+  leds_init();
 
   leds_on(0xffff);
 
