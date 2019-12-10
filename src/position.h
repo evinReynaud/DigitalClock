@@ -7,6 +7,6 @@ void position_init();
 
 void check_pos();
 
-int get_pos();
+uint32_t get_pos();
 
 #endif

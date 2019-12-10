@@ -12,35 +12,28 @@
 // volatile int etat = 0;
 volatile uint16_t countPerTour = 1;
 
-volatile int follow = 0;
-
 volatile int force_hall = 0;
 
 ISR(INT0_vect)
 {
-  if(follow == 0)
-  {
-    follow = 1;
+  uint16_t t = pos_timer_read();
+  pos_timer_write(1);
+  countPerTour = t;
+  force_hall = 0;
 
-    uint16_t t = pos_timer_read();
-    pos_timer_write(1);
-    countPerTour = t;
-    force_hall = 0;
+  // Disable this interruption
+  EIMSK &= ~(1 << INT0);
 
-    // uint16_t t = pos_timer_read();
-    // pos_timer_write(1);
-    // leds_on(0xffff);
-    // countPerTour = t;
-    // force_hall = 0;
-    // leds_on(0);
-    char b[20];
-    sprintf(b, "%u\n", countPerTour);
-    debug_printf(b);
-  }
-  else if(TCNT3 > 100)
-  {
-    follow = 0;
-  }
+  // uint16_t t = pos_timer_read();
+  // pos_timer_write(1);
+  // leds_on(0xffff);
+  // countPerTour = t;
+  // force_hall = 0;
+  // leds_on(0);
+  // char b[20];
+  // sprintf(b, "%u\n", countPerTour);
+  // debug_printf(b);
+
 }
 
 void effethall_init()
@@ -52,14 +45,12 @@ void effethall_init()
   EIMSK |= (1 << INT0);
 }
 
-void check_effethall(void (*treatment)(), uint16_t timer)
+inline void check_effethall()
 {
-  (void) (*treatment);
-  (void) timer;
-
-  if(TCNT3 > 100)
+  if(TCNT3 > 50)
   {
-    follow = 0;
+    // Enable the interruption
+    EIMSK |= (1 << INT0);
   }
 }
 

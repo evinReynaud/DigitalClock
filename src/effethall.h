@@ -8,6 +8,6 @@ extern volatile int force_hall;
 
 void effethall_init();
 
-void check_effethall(void (*treatment)(), uint16_t timer);
+void check_effethall();
 
 #endif

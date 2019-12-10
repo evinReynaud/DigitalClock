@@ -52,9 +52,10 @@ int main()
       init();
     }
     interface();
-    // update_hour();
+    update_hour();
     check_pos();
     display_strip();
+    
     // char b[8];
     // sprintf(b, "%d\n", get_pos());
     // debug_printf(b);

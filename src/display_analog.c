@@ -123,25 +123,25 @@ inline void init_display_array(){
 }
 
 void init_display(){
-  // h_pos = hour_to_pos(0, 0);
-  // m_pos = minute_to_pos(0, 0);
-  // s_pos = seconds_to_pos(0);
-  //
-  // init_display_array();
-  //
-  // for(int h = 0; h < 12; h++) {
-  //   display[hour_mark[h]] |= HOUR_MARK;
-  // }
-  //
-  // display[h_pos] |= HOUR_HAND;
-  // display[m_pos] |= MINUTE_HAND;
-  // display[s_pos] |= SECOND_HAND;
+  h_pos = hour_to_pos(0, 0);
+  m_pos = minute_to_pos(0, 0);
+  s_pos = seconds_to_pos(0);
 
   init_display_array();
-  display[0] = 0b1111000000000000;
-  display[POS_IN_A_TURN/4] = 0b0000111100000000;
-  display[POS_IN_A_TURN/2] = 0b0000000011110000;
-  display[3*POS_IN_A_TURN/4] = 0b0000000000001111;
+
+  for(int h = 0; h < 12; h++) {
+    display[hour_mark[h]] |= HOUR_MARK;
+  }
+
+  display[h_pos] |= HOUR_HAND;
+  display[m_pos] |= MINUTE_HAND;
+  display[s_pos] |= SECOND_HAND;
+
+  // init_display_array();
+  // display[0] = 0b1111000000000000;
+  // display[POS_IN_A_TURN/4] = 0b0000111100000000;
+  // display[POS_IN_A_TURN/2] = 0b0000000011110000;
+  // display[3*POS_IN_A_TURN/4] = 0b0000000000001111;
 
   debug_show_array();
 }
@@ -182,6 +182,10 @@ void compute_display() {
 
 void display_strip()
 {
-  int pos = get_pos();
+  uint32_t pos = get_pos();
   leds_on(display[pos]);
+  // leds_on(LEDS_OFF);
+  // char b[20];
+  // sprintf(b, "%d\n", pos);
+  // debug_printf(b);
 }

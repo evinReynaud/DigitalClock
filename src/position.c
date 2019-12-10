@@ -25,29 +25,18 @@ void position_init()
   pos_timer_start();
 }
 
-void func(){
-//   uint16_t t = pos_timer_read();
-//   pos_timer_write(1);
-//   if(t > countPerTour/100 || force_hall){
-//     countPerTour = t;
-//     force_hall = 0;
-//   }
-//   char b[20];
-//   sprintf(b, "%u\n", countPerTour);
-//   debug_printf(b);
-}
-
 inline void check_pos(){
-  check_effethall(&func, TCNT3);
+  check_effethall();
 }
 
-int get_pos()
+uint32_t get_pos()
 {
   // char b[20];
   // sprintf(b, "%u, %u\n", pos_timer_read(), countPerTour);
   // debug_printf(b);
   // return (int)(pos_timer_read()-countPerTour);
-  return (int)(pos_timer_read()*POS_IN_A_TURN/countPerTour);
+  uint32_t t = (uint32_t) pos_timer_read();
+  return t*POS_IN_A_TURN/countPerTour;
   // return MIN((int)(pos_timer_read()*POS_IN_A_TURN/countPerTour), POS_IN_A_TURN);
   // return MIN((int)(TCNT3*POS_IN_A_TURN/countPerTour), POS_IN_A_TURN);
 }
