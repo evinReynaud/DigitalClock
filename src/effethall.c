@@ -10,11 +10,15 @@
 
 volatile uint16_t countPerTour = 1;
 
+
 ISR(INT0_vect)
 {
+
   countPerTour = pos_timer_read();
   pos_timer_write(1);
+  EIMSK &= ~(1 << INT0);
 
+  //pos_timer_write(1);
   // char b[8];
   // sprintf(b, "%d\n", countPerTour);
   // debug_printf(b);

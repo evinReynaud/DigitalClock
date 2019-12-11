@@ -5,7 +5,7 @@
 #include "interface.h"
 #include "position.h"
 #include "timer.h"
-
+#include "effethall.h"
 #include "debug.h"
 
 void init(){
@@ -44,23 +44,23 @@ void soft_reset(){
 int main()
 {
   init();
-
   send_info();
-
   while (1)
   {
-    if (reset == 1){
-      reset = 0;
-      soft_reset();
-    }
-    if (reset == 2){
-      reset = 0;
-      init();
-    }
+    // if (reset == 1){
+    //   reset = 0;
+    //   soft_reset();
+    // }
+    // if (reset == 2){
+    //   reset = 0;
+    //   init();
+    // }
     interface();
     update_hour();
-    display_strip();
+    //display_strip();
+    leds_on(display[get_pos()]);
 
+    effethall_init();
     // char b[8];
     // sprintf(b, "%d\n", get_pos());
     // debug_printf(b);

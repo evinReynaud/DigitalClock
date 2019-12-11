@@ -38,10 +38,10 @@ uint16_t TIM16_ReadTCNT3()
   /* Read TCNTn into i */
   //countPerTour = TCNT3 - countPerTour + countI*valueMaxCount;
   val = TCNT3;
+  //pos_timer_write(1);
   /* Restore global interrupt flag */
   sei();
   SREG = sreg;
-
   return val;
 }
 

@@ -14,6 +14,8 @@
 #define MINUTE_HAND 0b0000111111110000
 #define HOUR_HAND   0b0000000011111111
 
+extern uint16_t display[POS_IN_A_TURN]; // The array in which we store our led configs
+
 void init_display();
 void compute_display();
 void display_strip();
