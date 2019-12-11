@@ -8,7 +8,7 @@
 
 #include "display_analog.h"
 
-#define MINS_IN_A_DAY 1440
+#define MINS_IN_HALF_A_DAY 720
 // pos: 0 to 10800
 
 #ifndef COUNTERCLOCKWISE
@@ -16,10 +16,7 @@
 inline int hour_to_pos(int h, int m)
 {
   int mins = h*60 + m;
-  // char b[256];
-  // sprintf(b, "1: %d %d %d\n", h, m, mins);
-  // print(b);
-  return ((mins+MINS_IN_A_DAY/2)%MINS_IN_A_DAY)*(POS_IN_A_TURN/MINS_IN_A_DAY); // clockwise
+  return (((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)*POS_IN_A_TURN)/MINS_IN_HALF_A_DAY; // clockwise
 }
 
 // Array of the discreet hands positions.
@@ -41,7 +38,7 @@ inline int hour_to_pos(int h, int m)
   // char b[256];
   // sprintf(b, "1: %d %d %d\n", h, m, mins);
   // print(b);
-  return POS_IN_A_TURN - ((mins+MINS_IN_A_DAY/2)%MINS_IN_A_DAY)*(POS_IN_A_TURN/MINS_IN_A_DAY); // clockwise
+  return POS_IN_A_TURN - (((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)*POS_IN_A_TURN)/MINS_IN_HALF_A_DAY); // clockwise
 }
 
 // Array of the discreet hands positions.

@@ -67,5 +67,5 @@ int main()
 }
 
 // TODO:
-// Reset time properly
-// Fix display
+// Add rotation function (Junior)
+//

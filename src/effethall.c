@@ -31,4 +31,6 @@ void effethall_init()
 
   // Allow external interrupt 0
   EIMSK |= (1 << INT0);
+
+  countPerTour = 1;
 }
