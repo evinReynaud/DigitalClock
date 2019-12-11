@@ -162,8 +162,8 @@ void compute_display() {
   display[h_pos] &= ~(HOUR_HAND);
   display[m_pos] &= ~(MINUTE_HAND);
   // display[s_pos] &= ~(SECOND_HAND); // We do NOT reset the seconds every second
-  if(seconds == 0){ // Reset the seconds
-    for(int pos = seconds_to_pos(1); pos < POS_IN_A_TURN; pos++){
+  if(seconds == 1){ // Reset the seconds
+    for(int pos = 0; pos < POS_IN_A_TURN; pos++){
       display[pos] &= ~(SECOND_HAND);
     }
   }
@@ -174,6 +174,14 @@ void compute_display() {
 
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
+  if(new_s_pos < s_pos){
+    for(int pos = 0; pos < new_s_pos; pos++){
+      display[pos] |= SECOND_HAND;
+    }
+    for(int pos = s_pos; pos < POS_IN_A_TURN; pos++){
+      display[pos] |= SECOND_HAND;
+    }
+  }
   for(int pos = s_pos; pos <= new_s_pos; pos++){
     display[pos] |= SECOND_HAND;
   }
@@ -182,8 +190,10 @@ void compute_display() {
 
 void display_strip()
 {
-  uint32_t pos = get_pos();
-  leds_on(display[pos]);
+  leds_on(display[get_pos()]);
+
+  // uint32_t pos = get_pos();
+  // leds_on(display[pos]);
   // leds_on(LEDS_OFF);
   // char b[20];
   // sprintf(b, "%d\n", pos);

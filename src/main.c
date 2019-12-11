@@ -9,6 +9,9 @@
 #include "debug.h"
 
 void init(){
+  hours = 0;
+  minutes = 0;
+  seconds = 0;
   bluetooth_init();
   debug_printf("=================\nStart init\n");
   debug_printf("Init leds\n");
@@ -31,6 +34,9 @@ void init(){
 }
 
 void soft_reset(){
+  hours = 0;
+  minutes = 0;
+  seconds = 0;
   init_display();
   position_init();
 }
@@ -53,7 +59,6 @@ int main()
     }
     interface();
     update_hour();
-    check_pos();
     display_strip();
 
     // char b[8];

@@ -25,10 +25,6 @@ void position_init()
   pos_timer_start();
 }
 
-inline void check_pos(){
-  check_effethall();
-}
-
 uint32_t get_pos()
 {
   // char b[20];

@@ -80,11 +80,6 @@ void interface()
           reset = 2;
         }
 
-        if (data[0] == 'F')
-        {
-          force_hall = 1;
-        }
-
         //if (data[0] == 'M')
         //{
         //    mode = atoi(data[2]);
