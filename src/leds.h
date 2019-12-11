@@ -1,6 +1,9 @@
 #ifndef __LEDS_H__
 #define __LEDS_H__
 
+#define LEDS_OFF    0b0000000000000000
+#define LEDS_ON     0b1111111111111111
+
 void leds_init();
 
 /**

@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include "leds.h"
 #include "clock.h"
 #include "position.h"
 
@@ -9,7 +8,11 @@
 #include "display_analog.h"
 
 #define MINS_IN_HALF_A_DAY 720
-// pos: 0 to 10800
+
+// The current position of the hands
+int h_pos = 0;
+int m_pos = 0;
+int s_pos = 0;
 
 #ifndef COUNTERCLOCKWISE
 // clockwise
@@ -69,19 +72,10 @@ int hour_mark[12] = {
 
 #define minute_to_pos(M, S) m_to_p[(M)]
 #define seconds_to_pos(S) m_to_p[(S)]
-// int minute_to_pos(int m, int s)
-// {
-//   return m_to_p[m];
-// }
-//
-// int seconds_to_pos(int s)
-// {
-//   return m_to_p[s];
-// }
 
 uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
 {
-  uint16_t leds = LEDS_OFF;
+  uint16_t leds = NO_HAND;
   if(pos == h_pos)
     leds |= HOUR_HAND;
   if(pos == m_pos)
@@ -101,35 +95,10 @@ uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
   return leds;
 }
 
-uint16_t display[POS_IN_A_TURN]; // The array in which we store our led configs
-
-// The current position of the hands
-int h_pos = 0;
-int m_pos = 0;
-int s_pos = 0;
-
-void debug_show_array(){
-  char b[16];
-  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
-    if(display[pos] != 0){
-      sprintf(b, "%03d: %x\n", pos, display[pos]);
-      debug_printf(b);
-    }
-  }
-}
-
-inline void init_display_array(){
-  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
-    display[pos] = NO_HAND;
-  }
-}
-
-void init_display(){
+void init_analog_display(uint16_t * display){
   h_pos = hour_to_pos(0, 0);
   m_pos = minute_to_pos(0, 0);
   s_pos = seconds_to_pos(0);
-
-  init_display_array();
 
   for(int h = 0; h < 12; h++) {
     display[hour_mark[h]] |= HOUR_MARK;
@@ -148,8 +117,6 @@ void init_display(){
   // display[POS_IN_A_TURN/4] = 0b0000111100000000;
   // display[POS_IN_A_TURN/2] = 0b0000000011110000;
   // display[3*POS_IN_A_TURN/4] = 0b0000000000001111;
-
-  debug_show_array();
 }
 
 // void compute_display_slow() {
@@ -163,7 +130,7 @@ void init_display(){
 //   }
 // }
 
-void compute_display() {
+void compute_analog_display(uint16_t * display) {
 
   // Remove the hour and minute hands
   display[h_pos] &= ~(HOUR_HAND);
@@ -197,16 +164,4 @@ void compute_display() {
     display[pos] |= SECOND_HAND;
   }
   s_pos = new_s_pos;
-}
-
-void display_strip()
-{
-  leds_on(display[get_pos()]);
-
-  // uint32_t pos = get_pos();
-  // leds_on(display[pos]);
-  // leds_on(LEDS_OFF);
-  // char b[20];
-  // sprintf(b, "%d\n", pos);
-  // debug_printf(b);
 }

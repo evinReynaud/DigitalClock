@@ -3,7 +3,7 @@
 #include "leds.h"
 #include "timer.h"
 #include "bluetooth.h"
-#include "display_analog.h"
+#include "display.h"
 
 #include "debug.h"
 

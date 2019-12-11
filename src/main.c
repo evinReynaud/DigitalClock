@@ -1,6 +1,6 @@
 #include "leds.h"
 #include "bluetooth.h"
-#include "display_analog.h"
+#include "display.h"
 #include "clock.h"
 #include "interface.h"
 #include "position.h"
@@ -8,7 +8,7 @@
 #include "effethall.h"
 #include "debug.h"
 
-void init(){
+void system_init(){
   hours = 0;
   minutes = 0;
   seconds = 0;
@@ -41,7 +41,7 @@ void soft_reset(){
 
 int main()
 {
-  init();
+  system_init();
   send_info();
   while (1)
   {
@@ -51,7 +51,7 @@ int main()
     }
     if (reset == 2){
       reset = 0;
-      init();
+      system_init();
     }
     interface();
     update_hour();
