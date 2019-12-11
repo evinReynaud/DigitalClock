@@ -12,14 +12,10 @@
 // volatile int etat = 0;
 volatile uint16_t countPerTour = 1;
 
-volatile int force_hall = 0;
-
 ISR(INT0_vect)
 {
-  uint16_t t = pos_timer_read();
+  countPerTour = pos_timer_read();
   pos_timer_write(1);
-  countPerTour = t;
-  force_hall = 0;
 
   // Disable this interruption
   EIMSK &= ~(1 << INT0);

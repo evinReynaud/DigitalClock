@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 extern volatile uint16_t countPerTour;
-extern volatile int force_hall;
 
 void effethall_init();
 
