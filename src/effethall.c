@@ -38,3 +38,9 @@ void effethall_init()
 
   countPerTour = 1;
 }
+
+inline void effethall_enable_interruption()
+{
+  if(TCNT3 > 50)
+    EIMSK |= (1 << INT0);
+}

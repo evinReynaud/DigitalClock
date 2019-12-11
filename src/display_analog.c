@@ -13,10 +13,15 @@
 
 #ifndef COUNTERCLOCKWISE
 // clockwise
-inline int hour_to_pos(int h, int m)
+inline uint16_t hour_to_pos(int h, int m)
 {
-  int mins = h*60 + m;
-  return (((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)*POS_IN_A_TURN)/MINS_IN_HALF_A_DAY; // clockwise
+  uint32_t mins = h*60+m;
+
+  // char b[64];
+  // sprintf(b, "%lu, %d, %lu, %lu, %lu, %lu\n", temp, MINS_IN_HALF_A_DAY/2, mins, (mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY, mins+MINS_IN_HALF_A_DAY/2, temp/MINS_IN_HALF_A_DAY);
+  // debug_printf(b);
+
+  return POS_IN_A_TURN*((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)/MINS_IN_HALF_A_DAY; // clockwise
 }
 
 // Array of the discreet hands positions.
@@ -32,13 +37,13 @@ int m_to_p[60] = {
 };
 #else
 // counterclockwise
-inline int hour_to_pos(int h, int m)
+inline uint16_t hour_to_pos(int h, int m)
 {
-  int mins = h*60 + m;
+  uint32_t mins = h*60 + m;
   // char b[256];
   // sprintf(b, "1: %d %d %d\n", h, m, mins);
-  // print(b);
-  return POS_IN_A_TURN - (((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)*POS_IN_A_TURN)/MINS_IN_HALF_A_DAY); // clockwise
+  // debug_printf(b);
+  return POS_IN_A_TURN - (POS_IN_A_TURN*((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)/MINS_IN_HALF_A_DAY); // counterclockwise
 }
 
 // Array of the discreet hands positions.
@@ -130,6 +135,10 @@ void init_display(){
     display[hour_mark[h]] |= HOUR_MARK;
   }
 
+  char b[64];
+  sprintf(b, "%u, %d, %d\n\n", h_pos, m_pos, s_pos);
+  debug_printf(b);
+
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
   display[s_pos] |= SECOND_HAND;
@@ -170,9 +179,9 @@ void compute_display() {
   m_pos = minute_to_pos(minutes, seconds);
   int new_s_pos = seconds_to_pos(seconds);
 
-  char b[64];
-  sprintf(b, "%d:%d:%u\n%d, %d, %d\n\n", hours, minutes, seconds, h_pos, m_pos, new_s_pos);
-  debug_printf(b);
+  // char b[64];
+  // sprintf(b, "%d:%d:%u\n%d, %d, %d\n\n", hours, minutes, seconds, h_pos, m_pos, new_s_pos);
+  // debug_printf(b);
 
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;

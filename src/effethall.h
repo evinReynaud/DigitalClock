@@ -6,4 +6,7 @@
 extern volatile uint16_t countPerTour;
 
 void effethall_init();
+
+void effethall_enable_interruption();
+
 #endif

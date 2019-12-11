@@ -45,20 +45,19 @@ int main()
   send_info();
   while (1)
   {
-    // if (reset == 1){
-    //   reset = 0;
-    //   soft_reset();
-    // }
-    // if (reset == 2){
-    //   reset = 0;
-    //   init();
-    // }
+    if (reset == 1){
+      reset = 0;
+      soft_reset();
+    }
+    if (reset == 2){
+      reset = 0;
+      init();
+    }
     interface();
     update_hour();
-    //display_strip();
-    leds_on(display[get_pos()]);
+    display_strip();
 
-    effethall_init();
+    check_position();
     // char b[8];
     // sprintf(b, "%d\n", get_pos());
     // debug_printf(b);
