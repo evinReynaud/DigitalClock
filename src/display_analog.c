@@ -158,6 +158,7 @@ void init_display(){
 // }
 
 void compute_display() {
+
   // Remove the hour and minute hands
   display[h_pos] &= ~(HOUR_HAND);
   display[m_pos] &= ~(MINUTE_HAND);
@@ -171,6 +172,10 @@ void compute_display() {
   h_pos = hour_to_pos(hours, minutes);
   m_pos = minute_to_pos(minutes, seconds);
   int new_s_pos = seconds_to_pos(seconds);
+
+  char b[64];
+  sprintf(b, "%d:%d:%u\n%d, %d, %d\n\n", hours, minutes, seconds, h_pos, m_pos, new_s_pos);
+  debug_printf(b);
 
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
