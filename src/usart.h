@@ -11,4 +11,6 @@ char USART_receive();
 
 void USART_transmit(char data);
 
+int USART_data_ready();
+
 #endif

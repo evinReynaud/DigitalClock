@@ -26,8 +26,6 @@ void init(){
   debug_printf("Start timer\n");
   timer_start();
 
-  interface_interrupt_init();
-
   leds_on(LEDS_OFF);
 
   debug_printf("Init done\n\n");

@@ -32,7 +32,7 @@ uint32_t get_pos()
   // debug_printf(b);
   // return (int)(pos_timer_read()-countPerTour);
   uint32_t t = (uint32_t) pos_timer_read();
-  return t*POS_IN_A_TURN/countPerTour;
+  return (t*POS_IN_A_TURN/countPerTour)%POS_IN_A_TURN;
   // return MIN((int)(pos_timer_read()*POS_IN_A_TURN/countPerTour), POS_IN_A_TURN);
   // return MIN((int)(TCNT3*POS_IN_A_TURN/countPerTour), POS_IN_A_TURN);
 }
