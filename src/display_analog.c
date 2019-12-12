@@ -86,6 +86,8 @@ uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
   #else
   if((seconds < 30  &&  pos <= POS_IN_A_TURN/2 && pos >= s_pos)
   || (seconds >= 30 && (pos <= POS_IN_A_TURN/2 || pos >= s_pos)))
+  // if((seconds < 30  &&  pos >= POS_IN_A_TURN/2 && pos <= s_pos)
+  // || (seconds >= 30 && (pos >= POS_IN_A_TURN/2 || pos <= s_pos)))
   #endif
     leds |= SECOND_HAND;
 
@@ -152,15 +154,23 @@ void compute_analog_display(uint16_t * display) {
 
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
-  if(new_s_pos < s_pos){
-    for(int pos = 0; pos < new_s_pos; pos++){
+
+  #ifndef COUNTERCLOCKWISE
+  int small_pos = s_pos;
+  int big_pos = new_s_pos;
+  #else
+  int small_pos = new_s_pos;
+  int big_pos = s_pos;
+  #endif
+  if(big_pos < small_pos){
+    for(int pos = 0; pos < big_pos; pos++){
       display[pos] |= SECOND_HAND;
     }
-    for(int pos = s_pos; pos < POS_IN_A_TURN; pos++){
+    for(int pos = small_pos; pos < POS_IN_A_TURN; pos++){
       display[pos] |= SECOND_HAND;
     }
   }
-  for(int pos = s_pos; pos <= new_s_pos; pos++){
+  for(int pos = small_pos; pos <= big_pos; pos++){
     display[pos] |= SECOND_HAND;
   }
   s_pos = new_s_pos;
