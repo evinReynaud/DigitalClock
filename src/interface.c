@@ -77,6 +77,17 @@ void interface()
       reset = 2;
     }
 
+    else if (data[0] == 'd')
+    {
+      char timer[17];
+      strcpy(timer, data+2);
+
+      effethall_timer = atoi(timer);
+
+      char b[64];
+      sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
+      debug_printf(b);
+    }
     //if (data[0] == 'M')
     //{
     //    mode = atoi(data[2]);
