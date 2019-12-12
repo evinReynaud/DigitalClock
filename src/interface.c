@@ -6,6 +6,7 @@
 #include "bluetooth.h"
 #include "clock.h"
 #include "effethall.h"
+#include "display.h"
 
 #include "debug.h"
 
@@ -18,11 +19,8 @@ int reset = 0;
 
 void send_info()
 {
-  char data[256];
-  sprintf(data, "send H_hhmm to change hour\n");
-  bluetooth_transmit(data);
-  //sprintf(data, "send M_n  with n=1,2,3 to change mode\n");
-  //bluetooth_transmit(data);
+  bluetooth_transmit("send H_hhmm to change hour\n");
+  bluetooth_transmit("send M_n  with n=1,2 to change mode\n");
 }
 
 uint8_t chartoi(char c)
@@ -88,11 +86,18 @@ void interface()
       sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
       debug_printf(b);
     }
-    //if (data[0] == 'M')
-    //{
-    //    mode = atoi(data[2]);
-    // ajouter le code permettant d'affecter les valeurs
-    //}
+    if (data[0] == 'M')
+    {
+      int m = chartoi(data[2]) - 1;
+      if(m >= ANALOG && m < NB_MODES){
+        mode = m;
+        char b[64];
+        sprintf(b, "Changed mode: %d\n", mode);
+        debug_printf(b);
+        init_display();
+      }
+       //ajouter le code permettant d'affecter les valeurs
+    }
 
     data_received = FALSE;
   }

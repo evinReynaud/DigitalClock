@@ -9,6 +9,7 @@
 #include "debug.h"
 
 void system_init(){
+  mode = DIGITAL;
   hours = 0;
   minutes = 0;
   seconds = 0;
@@ -32,6 +33,7 @@ void system_init(){
 }
 
 void soft_reset(){
+  mode = DIGITAL;
   hours = 0;
   minutes = 0;
   seconds = 0;

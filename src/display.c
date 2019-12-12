@@ -11,7 +11,7 @@
 
 #include "display.h"
 
-enum display_mode {ANALOG, DIGITAL, NB_MODES} mode = ANALOG;
+enum display_mode mode = ANALOG;
 
 uint16_t display[POS_IN_A_TURN]; // The array in which we store our led configs
 
@@ -59,6 +59,7 @@ void (*compute[NB_MODES])(uint16_t * display) = {&compute_analog_display, &compu
 
 void compute_display() {
   compute[mode](display);
+  // debug_show_array();
 }
 
 void display_strip()

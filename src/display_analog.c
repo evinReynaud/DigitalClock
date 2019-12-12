@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "clock.h"
-#include "position.h"
+//#include "position.h"
 
 #include "debug.h"
 
