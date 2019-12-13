@@ -13,6 +13,9 @@
 #define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)
 #define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
 
+char line1[16] = {'\0'};
+char line2[16] = {'\0'};
+
 uint16_t** chars = NULL;
 
 #ifndef MAX_LINE_WIDTH
@@ -46,19 +49,10 @@ void reset_display(uint16_t * display)
 void init_digital_display(uint16_t * display)
 {
   chars = get_char_table();
-  (void) display;
+  line1[0] = '\0';
+  line2[0] = '\0';
+  reset_display(display);
 }
-
-// void compute_display_slow() {
-//   h_pos = hour_to_pos(hours, minutes);
-//   m_pos = minute_to_pos(minutes, seconds);
-//   s_pos = seconds_to_pos(seconds);
-//   for(int pos = 0; pos < POS_IN_A_TURN; pos++){
-//     uint16_t leds = get_hands(pos, h_pos, m_pos, s_pos);
-//     if(display[pos] != leds)
-//       display[pos] = leds;
-//   }
-// }
 
 unsigned int pixel_length_for_width(char * line, unsigned int line_width){
   int len = 0;
@@ -87,19 +81,10 @@ unsigned int pixel_length(char * line, unsigned int* line_width, unsigned int ma
 
 void write_in(uint16_t * display, int pos, uint16_t val)
 {
-  // char b[8];
-  // sprintf(b, "%d ", pos);
-  // debug_printf(b);
   while(pos < 0){
-    pos = POS_IN_A_TURN+pos;
+    pos += POS_IN_A_TURN;
   }
-  // sprintf(b, "%d ", pos);
-  // debug_printf(b);
-  while(pos >= POS_IN_A_TURN){
-    pos = pos-POS_IN_A_TURN;
-  }
-  // sprintf(b, "%d\n", pos);
-  // debug_printf(b);
+  pos %= POS_IN_A_TURN;
   display[pos] = val;
 }
 
@@ -133,23 +118,11 @@ int write_first_line(uint16_t * display, char * line)
   int len = pixel_length(line, &line_width, FIRST_LINE_STOP_POS - FIRST_LINE_START_POS);
   int display_pos = MAX(FIRST_LINE_START_POS+(FIRST_LINE_STOP_POS - FIRST_LINE_START_POS - len)/2, FIRST_LINE_START_POS);
 
-  // for(int pos = FIRST_LINE_START_POS; pos < display_pos; pos++)
-  // {
-  //   write_in(display, pos, 0);
-  // }
-  //
-  // for(int pos = FIRST_LINE_STOP_POS - display_pos; pos > FIRST_LINE_STOP_POS; pos++)
-  // {
-  //   write_in(display, pos, 0);
-  // }
-
   for(unsigned int c = 0; line[c] != '\0'; c++){
     for(unsigned int i = 1; i <= chars[(int)line[c]][0]; i++){
       for(unsigned int j = 0; j < line_width; j++){
         if(display_pos < FIRST_LINE_STOP_POS){
-          write_in(display, display_pos, chars[(int)line[c]][i]);
-          display_pos++;
-          // display[display_pos++] = chars[(int)line1[c]][i];
+          write_in(display, display_pos++, chars[(int)line[c]][i]);
         }
         else {
           return 1;
@@ -158,9 +131,7 @@ int write_first_line(uint16_t * display, char * line)
     }
     for(unsigned int j = 0; j < line_width; j++){
       if(display_pos < FIRST_LINE_STOP_POS){
-        write_in(display, display_pos, 0);
-        display_pos++;
-        // display[display_pos++] = 0;
+        write_in(display, display_pos++, 0);
       }
       else {
         return 1;
@@ -170,23 +141,11 @@ int write_first_line(uint16_t * display, char * line)
   return 0;
 }
 
-
-
 int write_second_line(uint16_t * display, char * line)
 {
   unsigned int line_width;
   int len = pixel_length(line, &line_width, SECOND_LINE_START_POS + POS_IN_A_TURN - SECOND_LINE_STOP_POS);
   int display_pos = MIN(len/2, SECOND_LINE_START_POS);
-
-  // for(int pos = SECOND_LINE_START_POS; pos < display_pos; pos--)
-  // {
-  //   write_in(display, pos, 0);
-  // }
-  //
-  // for(int pos = -display_pos; pos > SECOND_LINE_STOP_POS - POS_IN_A_TURN ; pos--)
-  // {
-  //   write_in(display, pos, 0);
-  // }
 
   for(unsigned int c = 0; line[c] != '\0'; c++){
     for(unsigned int i = 1; i <= chars[(int)line[c]][0]; i++){
@@ -241,9 +200,6 @@ void get_data_to_print(char* line1, char* line2)
 
 void compute_digital_display(uint16_t * display)
 {
-  char line1[16] = {'\0'};
-  char line2[16] = {'\0'};
-
   get_data_to_print(line1, line2);
 
   reset_display(display);

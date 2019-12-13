@@ -52,16 +52,8 @@ void interface()
 
     if (data[0] == 'H')
     {
-      hours = MIN(chartoi(data[2]) * 10 + chartoi(data[3]), 23);
-      minutes = MIN(chartoi(data[4]) * 10 + chartoi(data[5]) - 1, 59);
-
-      seconds = 0;
-      sprintf(data, ".. Hour changed ..\n");
-      bluetooth_transmit(data);
-
-      // char b[64];
-      // sprintf(b, "  %d:%d:%u\n", hours, minutes, seconds);
-      // debug_printf(b);
+      set_time(atoi(data+2)/100, atoi(data+4), 0);
+      bluetooth_transmit("Hour changed\n");
     }
 
     else if (data[0] == 'I')
@@ -88,7 +80,7 @@ void interface()
 
       char b[64];
       sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
-      debug_printf(b);
+      bluetooth_transmit(b);
     }
     else if (data[0] == 'M')
     {
@@ -109,7 +101,7 @@ void interface()
         degre=0;
       }
       else
-      { 
+      {
         int m = -atoi(data+2);
         while(m<0)
         {
@@ -118,29 +110,7 @@ void interface()
         degre += m;
         degre %= POS_IN_A_TURN;
       }
-
-      // if(len>2)
-      // {
-      //   if(data[2]=='-' && len>3)
-      //   {
-      //     for(int i = 3;i<len;i++)
-      //     {
-      //       m+=chartoi(data[i])*pow(10,(len-i-1));
-      //     }
-      //     m *=-1;
-      //   }
-      //   else if(data[2]=='r')
-      //   {
-      //     degre=0;
-      //   }
-      //   else
-      //   {
-      //     for(int i =2;i<len;i++)
-      //     {
-      //       m+=chartoi(data[i])*pow(10,(len-i-1));
-      //     }
-      //   }
     }
   }
-    data_received = FALSE;
+  data_received = 0;
 }

@@ -56,17 +56,15 @@ int main()
       system_init();
     }
     interface();
-    update_hour();
+    update_time();
     display_strip();
 
     check_position();
-    // char b[8];
-    // sprintf(b, "%d\n", get_pos());
-    // debug_printf(b);
   }
   return 0;
 }
 
 // TODO:
-// Add rotation function (Junior)
+// Weld new motor (Junior)
+// Benchmark compute_display() for each mode, display_strip(), the hall effect interruption
 //

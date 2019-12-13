@@ -1,6 +1,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdint.h>
+
 #include "timer.h"
+
+volatile uint8_t seconds = 0;
+volatile uint16_t time_count = 0;
 
 void timer_init(void)
 {
@@ -14,7 +19,6 @@ void timer_init(void)
 void timer_start(void)
 {
     timer_init();
-    //OCR1  = 1624 ; /* overflow in OCR1*8 clock cycles */
     OCR1AH = 0b00000110; // on a 2* 8 bits car on est à 16 bits avec le timer 1
     OCR1AL = 0b01011001;
     TIMSK |= _BV(TOIE1); /* enable overflow interrupt pour le timer 1  */
@@ -32,9 +36,8 @@ void timer_stop(void)
 ISR(TIMER1_OVF_vect) /* timer 1 interrupt service routine */
 {
     time_count -= 1;
-    if (time_count == 0)
+    if (time_count == 0) // One second has passed
     {
-        // Il s'est écoulé une seconde j'incrémente d'une seconde.
         time_count = 1000;
         seconds = (seconds + 1) % 60;
     }

@@ -1,8 +1,9 @@
 #ifndef __TIMER_H__
 #define __TIMER_H__
 
-volatile uint16_t time_count;
-volatile uint8_t seconds;
+#include <stdint.h>
+
+extern volatile uint8_t seconds;
 
 void timer_init();
 
