@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+extern int offset;
+
 void position_init();
 
 uint32_t get_pos();

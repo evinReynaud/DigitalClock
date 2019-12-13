@@ -8,6 +8,7 @@
 #define HOUR_HAND   0b0000000011111111
 
 void init_analog_display(uint16_t * display);
+
 void compute_analog_display(uint16_t * display);
 
 #endif

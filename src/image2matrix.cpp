@@ -37,7 +37,6 @@ void read_directory(const std::string& name, stringvec& v)
 
 string init_file(){
   return "#include <stdlib.h>\n#include <stdint.h>\n\nuint16_t** get_char_table()\n{\n\tuint16_t** chars = malloc(256*sizeof(uint16_t*));\n\tuint16_t* default_char = malloc(2*sizeof(uint16_t));\n\tdefault_char[0] = 1, default_char[1] = 0;\n\tfor(int i = 0; i < 256; i++){\n\t\tchars[i] = default_char;\n\t}\n\n";
-  // return "";
 }
 
 void get_name(char* path, char* name){
@@ -58,7 +57,6 @@ char get_index(char* path, int* first_available_index, char* returned_name) {
   get_name(path, name);
   strcpy(returned_name, name);
 
-  // printf("%s %s\n", name, returned_name);
   if(strlen(name) == 1 && '!' <= name[0] && name[0] <= '~'){
     return name[0];
   }
@@ -104,7 +102,6 @@ string scan_img(char* path, int* first_available_index) {
 
   char name[32];
   char index = get_index(path, first_available_index, name);
-  // printf("index: %c %d\n", index, index);
   if(index == 0)
     return "";
 

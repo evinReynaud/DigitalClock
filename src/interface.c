@@ -7,111 +7,101 @@
 #include "clock.h"
 #include "effethall.h"
 #include "display.h"
-
-#include "debug.h"
-#include "interface.h"
 #include "position.h"
 
-#define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
+#include "debug.h"
 
-volatile int data_received = 0;
-volatile int degre = 0;
+#include "interface.h"
+
+#define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
 
 int reset = 0;
 
 void send_info()
 {
+  bluetooth_transmit("send I to display this screen\n");
   bluetooth_transmit("send H_hhmm to change hour\n");
   bluetooth_transmit("send M_n  with n=1,2 to change mode\n");
-  bluetooth_transmit("send d_xxx to change the clock orientation (ex: d_-10)\n");
-  bluetooth_transmit("send r for a soft  restart\n");
-  bluetooth_transmit("send R for a complete restart\n");
+  bluetooth_transmit("send O_xxx to change the clock orientation (ex: O_-10)\n");
+  bluetooth_transmit("send r for a soft restart\n");
+  bluetooth_transmit("send R for a full restart\n");
 }
 
-uint8_t chartoi(char c)
+void set_effethall_timer(char * data)
 {
-  char stTemp[2];
-  uint8_t ctoi;
-  sprintf(stTemp, "%c", c);
-  ctoi = atoi(stTemp);
-  return ctoi;
+  char timer[17];
+  strcpy(timer, data + 2);
+
+  effethall_timer = atoi(timer);
+
+  char b[64];
+  sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
+  bluetooth_transmit(b);
+}
+
+void set_mode(char * data)
+{
+  int m = atoi(data+2) - 1;
+  if (m >= ANALOG && m < NB_MODES) {
+    mode = m;
+    init_display();
+
+    char b[64];
+    sprintf(b, "Changed to mode %d\n", mode);
+    bluetooth_transmit(b);
+  }
+}
+
+void set_offset(char * data)
+{
+  if(data[2]=='r')
+    offset=0;
+  else {
+    int m = -atoi(data+2);
+    while(m<0)
+      m+=POS_IN_A_TURN;
+    offset = (offset + m) % POS_IN_A_TURN;
+  }
 }
 
 void interface()
 {
-  if (bluetooth_data_ready())
-  {
-    char data[256];
-    bluetooth_wait_for_data(data);
-    if (strlen(data) == 0)
-      return;
+  if (!bluetooth_data_ready())
+    return;
 
-    // bluetooth_transmit(data);
-    // char b[8];
-    // sprintf(b, "\n%d\n", strlen(data));
-    // debug_printf(b);
+  char data[256];
+  bluetooth_wait_for_data(data);
+  if (strlen(data) == 0)
+    return;
+  switch(data[0]){
+    case 'H':
+    set_time(atoi(data + 2) / 100, atoi(data + 4), 0);
+    bluetooth_transmit("hour changed\n");
+    break;
 
-    if (data[0] == 'H')
-    {
-      set_time(atoi(data + 2) / 100, atoi(data + 4), 0);
-      bluetooth_transmit("hour changed\n");
-    }
+    case 'I':
+    case 'h':
+    send_info();
+    break;
 
-    else if (data[0] == 'I' || data[0] == 'h')
-    {
-      send_info();
-    }
+    case 'r':
+    reset = 1;
+    break;
 
-    else if (data[0] == 'r')
-    {
-      reset = 1;
-    }
+    case 'R':
+    reset = 2;
+    break;
 
-    else if (data[0] == 'R')
-    {
-      reset = 2;
-    }
+    case 'd':
+    set_effethall_timer(data);
+    break;
 
-    else if (data[0] == 'd')
-    {
-      char timer[17];
-      strcpy(timer, data + 2);
+    case 'M':
+    set_mode(data);
+    break;
 
-      effethall_timer = atoi(timer);
-
-      char b[64];
-      sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
-      bluetooth_transmit(b);
-    }
-    else if (data[0] == 'M')
-    {
-      int m = chartoi(data[2]) - 1;
-      if (m >= ANALOG && m < NB_MODES)
-      {
-        mode = m;
-        char b[64];
-        sprintf(b, "Changed mode: %d\n", mode);
-        debug_printf(b);
-        init_display();
-      }
-    }
-    else if (data[0] == 'd')
-    {
-      if(data[2]=='r')
-      {
-        degre=0;
-      }
-      else
-      {
-        int m = -atoi(data+2);
-        while(m<0)
-        {
-          m+=POS_IN_A_TURN;
-        }
-        degre += m;
-        degre %= POS_IN_A_TURN;
-      }
-    }
+    case 'O':
+    set_offset(data);
+    break;
   }
-  data_received = 0;
 }
