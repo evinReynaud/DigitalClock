@@ -2,7 +2,6 @@
 
 #include "config.h"
 #include "clock.h"
-//#include "position.h"
 
 #include "debug.h"
 
@@ -20,16 +19,11 @@ int s_pos = 0;
 inline uint16_t hour_to_pos(int h, int m)
 {
   uint32_t mins = h*60+m;
-
-  // char b[64];
-  // sprintf(b, "%lu, %d, %lu, %lu, %lu, %lu\n", temp, MINS_IN_HALF_A_DAY/2, mins, (mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY, mins+MINS_IN_HALF_A_DAY/2, temp/MINS_IN_HALF_A_DAY);
-  // debug_printf(b);
-
   return POS_IN_A_TURN*((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)/MINS_IN_HALF_A_DAY; // clockwise
 }
 
 // Array of the discreet hands positions.
-// It is precompiled and optimized so please dont freak out when seeing it as it is now
+// It is precalculated and optimized so please dont freak out when seeing it as it is now
 int m_to_p[60] = {
   ((POS_IN_A_TURN/60)*0+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*1+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*2+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*3+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*4+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*5+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*6+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*7+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*8+POS_IN_A_TURN/2)%POS_IN_A_TURN,
   ((POS_IN_A_TURN/60)*9+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*10+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*11+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*12+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*13+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*14+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*15+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*16+POS_IN_A_TURN/2)%POS_IN_A_TURN, ((POS_IN_A_TURN/60)*17+POS_IN_A_TURN/2)%POS_IN_A_TURN,
@@ -44,14 +38,11 @@ int m_to_p[60] = {
 inline uint16_t hour_to_pos(int h, int m)
 {
   uint32_t mins = h*60 + m;
-  // char b[256];
-  // sprintf(b, "1: %d %d %d\n", h, m, mins);
-  // debug_printf(b);
   return POS_IN_A_TURN - (POS_IN_A_TURN*((mins+MINS_IN_HALF_A_DAY/2)%MINS_IN_HALF_A_DAY)/MINS_IN_HALF_A_DAY); // counterclockwise
 }
 
 // Array of the discreet hands positions.
-// It is precompiled and optimized so please dont freak out when seeing it as it is now
+// It is precalculated and optimized so please dont freak out when seeing it as it is now
 int m_to_p[60] = {
   POS_IN_A_TURN - (((POS_IN_A_TURN/60)*0+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*1+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*2+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*3+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*4+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*5+POS_IN_A_TURN/2)%POS_IN_A_TURN),
   POS_IN_A_TURN - (((POS_IN_A_TURN/60)*6+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*7+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*8+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*9+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*10+POS_IN_A_TURN/2)%POS_IN_A_TURN), POS_IN_A_TURN - (((POS_IN_A_TURN/60)*11+POS_IN_A_TURN/2)%POS_IN_A_TURN),
@@ -74,30 +65,6 @@ int hour_mark[12] = {
 #define minute_to_pos(M, S) m_to_p[(M)]
 #define seconds_to_pos(S) m_to_p[(S)]
 
-uint16_t get_hands(int pos, int h_pos, int m_pos, int s_pos)
-{
-  uint16_t leds = NO_HAND;
-  if(pos == h_pos)
-    leds |= HOUR_HAND;
-  if(pos == m_pos)
-    leds |= MINUTE_HAND;
-  #ifndef COUNTERCLOCKWISE
-  if((seconds < 30  &&  pos >= POS_IN_A_TURN/2 && pos <= s_pos)
-  || (seconds >= 30 && (pos >= POS_IN_A_TURN/2 || pos <= s_pos)))
-  #else
-  if((seconds < 30  &&  pos <= POS_IN_A_TURN/2 && pos >= s_pos)
-  || (seconds >= 30 && (pos <= POS_IN_A_TURN/2 || pos >= s_pos)))
-  // if((seconds < 30  &&  pos >= POS_IN_A_TURN/2 && pos <= s_pos)
-  // || (seconds >= 30 && (pos >= POS_IN_A_TURN/2 || pos <= s_pos)))
-  #endif
-    leds |= SECOND_HAND;
-
-  // char b[256];
-  // sprintf(b, "%02d:%02d:%02d\n%d %d %d\n%04x\n", hours, minutes, seconds, hour_to_pos(hours, minutes), minute_to_pos(minutes, seconds), seconds_to_pos(seconds), leds);
-  // print(b);
-  return leds;
-}
-
 void init_analog_display(uint16_t * display){
   h_pos = hour_to_pos(0, 0);
   m_pos = minute_to_pos(0, 0);
@@ -114,24 +81,7 @@ void init_analog_display(uint16_t * display){
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
   display[s_pos] |= SECOND_HAND;
-
-  // init_display_array();
-  // display[0] = 0b1111000000000000;
-  // display[POS_IN_A_TURN/4] = 0b0000111100000000;
-  // display[POS_IN_A_TURN/2] = 0b0000000011110000;
-  // display[3*POS_IN_A_TURN/4] = 0b0000000000001111;
 }
-
-// void compute_display_slow() {
-//   h_pos = hour_to_pos(hours, minutes);
-//   m_pos = minute_to_pos(minutes, seconds);
-//   s_pos = seconds_to_pos(seconds);
-//   for(int pos = 0; pos < POS_IN_A_TURN; pos++){
-//     uint16_t leds = get_hands(pos, h_pos, m_pos, s_pos);
-//     if(display[pos] != leds)
-//       display[pos] = leds;
-//   }
-// }
 
 void compute_analog_display(uint16_t * display) {
 
@@ -148,10 +98,6 @@ void compute_analog_display(uint16_t * display) {
   h_pos = hour_to_pos(hours, minutes);
   m_pos = minute_to_pos(minutes, seconds);
   int new_s_pos = seconds_to_pos(seconds);
-
-  // char b[64];
-  // sprintf(b, "%d:%d:%u\n%d, %d, %d\n\n", hours, minutes, seconds, h_pos, m_pos, new_s_pos);
-  // debug_printf(b);
 
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;

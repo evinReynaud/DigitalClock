@@ -84,7 +84,7 @@ void interface()
 
       char b[64];
       sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
-      debug_printf(b);
+      bluetooth_transmit(b);
     }
     if (data[0] == 'M')
     {
@@ -99,6 +99,6 @@ void interface()
        //ajouter le code permettant d'affecter les valeurs
     }
 
-    data_received = FALSE;
+    data_received = 0;
   }
 }

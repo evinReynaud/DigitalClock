@@ -8,14 +8,12 @@ void pos_timer_start()
 {
   /* start timer clock */
   TCCR3B |= _BV(CS30)|_BV(CS32);
-  //TCCR1B |= _BV(CS11); /* prescaler: 8 */
 }
 
 void pos_timer_stop()
 {
   TCCR3B &= ~(_BV(CS30)|_BV(CS31)|_BV(CS32)); /* stop timer clock */
   ETIMSK &= ~_BV(TOIE3); /* disable interrupt */
-  //TIFR |= _BV(TOV1); /* clear interrupt flag */    //  A revoir parce que j'ai des doutes
 }
 
 void pos_timer_init()
@@ -33,12 +31,9 @@ uint16_t TIM16_ReadTCNT3()
   /* Save global interrupt flag */
   sreg = SREG;
   /* Disable interrupts */
-  //__disable_interrupt();
   cli();
   /* Read TCNTn into i */
-  //countPerTour = TCNT3 - countPerTour + countI*valueMaxCount;
   val = TCNT3;
-  //pos_timer_write(1);
   /* Restore global interrupt flag */
   sei();
   SREG = sreg;

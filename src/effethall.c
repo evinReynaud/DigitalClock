@@ -11,7 +11,7 @@
 
 volatile uint16_t countPerTour = 1;
 
-uint16_t effethall_timer = 100;
+uint16_t effethall_timer = 0;
 
 #ifdef DEBUG_HALL
 volatile int c = 0;
@@ -24,9 +24,6 @@ ISR(INT0_vect)
   {
     countPerTour = pos_timer_read();
     pos_timer_write(1);
-    // char b[8];
-    // sprintf(b, "%d\n", countPerTour);
-    // debug_printf(b);
     #ifdef DEBUG_HALL
     leds_on(LEDS_ON);
     leds_on(LEDS_OFF);
@@ -53,7 +50,7 @@ void effethall_init()
   sei();
 
   countPerTour = 1;
-  effethall_timer = 100;
+  effethall_timer = 0;
 }
 
 inline void effethall_enable_interruption()

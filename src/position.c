@@ -7,12 +7,7 @@
 #include "pos_timer.h"
 #include "effethall.h"
 
-#include "bluetooth.h"
-#include "debug.h"
-
 #include "position.h"
-
-#define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
 
 void position_init()
 {
