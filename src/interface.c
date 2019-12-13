@@ -21,6 +21,9 @@ void send_info()
 {
   bluetooth_transmit("send H_hhmm to change hour\n");
   bluetooth_transmit("send M_n  with n=1,2 to change mode\n");
+  bluetooth_transmit("send d_xxx to change the clock orientation (ex: d_-10)\n");
+  bluetooth_transmit("send r for a soft  restart\n");
+  bluetooth_transmit("send R for a complete restart\n");
 }
 
 uint8_t chartoi(char c)
@@ -39,7 +42,7 @@ void interface()
     char data[256];
     bluetooth_wait_for_data(data);
     if (strlen(data) == 0)
-    return;
+      return;
 
     // bluetooth_transmit(data);
     // char b[8];
@@ -48,11 +51,11 @@ void interface()
 
     if (data[0] == 'H')
     {
-      set_time(atoi(data+2)/100, atoi(data+4), 0);
-      bluetooth_transmit("Hour changed\n");
+      set_time(atoi(data + 2) / 100, atoi(data + 4), 0);
+      bluetooth_transmit("hour changed\n");
     }
 
-    else if (data[0] == 'I')
+    else if (data[0] == 'I' || data[0] == 'h')
     {
       send_info();
     }
@@ -70,7 +73,7 @@ void interface()
     else if (data[0] == 'd')
     {
       char timer[17];
-      strcpy(timer, data+2);
+      strcpy(timer, data + 2);
 
       effethall_timer = atoi(timer);
 
@@ -81,14 +84,14 @@ void interface()
     if (data[0] == 'M')
     {
       int m = chartoi(data[2]) - 1;
-      if(m >= ANALOG && m < NB_MODES){
+      if (m >= ANALOG && m < NB_MODES)
+      {
         mode = m;
         char b[64];
         sprintf(b, "Changed mode: %d\n", mode);
         debug_printf(b);
         init_display();
       }
-       //ajouter le code permettant d'affecter les valeurs
     }
 
     data_received = 0;
