@@ -118,7 +118,7 @@ uint16_t binary_mirror(uint16_t num)
   r <<= s; // shift when num's highest bits are zero
 
   // Shift to the bottom
-  s = 4;
+  s = 3;
   while(s){
     r <<= 1;
     s--;
