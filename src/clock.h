@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 extern int8_t hours;
-
 extern int8_t minutes;
 
 #ifndef __TIMER_H__
