@@ -12,6 +12,8 @@
 
 #include "position.h"
 
+#include "interface.h"
+
 #define MIN(X, Y) ((X) < (Y)) ? (X) : (Y)
 
 void position_init()
@@ -21,10 +23,12 @@ void position_init()
   pos_timer_start();
 }
 
+//void move(int degre)
+
 uint32_t get_pos()
 {
   uint32_t t = (uint32_t) pos_timer_read();
-  return (t*POS_IN_A_TURN/countPerTour)%POS_IN_A_TURN;
+  return (degre + (t*POS_IN_A_TURN/countPerTour))%POS_IN_A_TURN;
 }
 
 inline void check_position()
