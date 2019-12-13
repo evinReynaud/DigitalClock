@@ -10,6 +10,37 @@ uint16_t** get_char_table()
 		chars[i] = default_char;
 	}
 
+
+
+	// Creeper
+	chars[1]=malloc(9*sizeof(uint16_t));
+	chars[1][0]=8;
+	chars[1][1]=0x0;
+	chars[1][2]=0x3000;
+	chars[1][3]=0x3700;
+	chars[1][4]=0xe00;
+	chars[1][5]=0xe00;
+	chars[1][6]=0x3700;
+	chars[1][7]=0x3000;
+	chars[1][8]=0x0;
+
+	// €
+	// chars[2]=malloc(8*sizeof(uint16_t));
+	// chars[2][0]=7;
+	// chars[2][1]=0x500;
+	// chars[2][2]=0xf80;
+	// chars[2][3]=0x1540;
+	// chars[2][4]=0x2520;
+	// chars[2][5]=0x2020;
+	// chars[2][6]=0x2020;
+	// chars[2][7]=0x1040;
+
+	// Space
+	chars[32]=malloc(3*sizeof(uint16_t));
+	chars[32][0]=2;
+	chars[32][1]=0x0;
+	chars[32][2]=0x0;
+
 	// !
 	chars[33]=malloc(2*sizeof(uint16_t));
 	chars[33][0]=1;
@@ -64,6 +95,19 @@ uint16_t** get_char_table()
 	chars[45][1]=0x200;
 	chars[45][2]=0x200;
 	chars[45][3]=0x200;
+
+	// Dot
+	chars[46]=malloc(2*sizeof(uint16_t));
+	chars[46][0]=1;
+	chars[46][1]=0x20;
+
+	// Slash
+	chars[47]=malloc(5*sizeof(uint16_t));
+	chars[47][0]=4;
+	chars[47][1]=0x60;
+	chars[47][2]=0x180;
+	chars[47][3]=0x600;
+	chars[47][4]=0x1800;
 
 	// 0
 	chars[48]=malloc(6*sizeof(uint16_t));
@@ -222,18 +266,6 @@ uint16_t** get_char_table()
 	chars[67][5]=0x2020;
 	chars[67][6]=0x18c0;
 
-	// Creeper
-	chars[1]=malloc(9*sizeof(uint16_t));
-	chars[1][0]=8;
-	chars[1][1]=0x0;
-	chars[1][2]=0x3000;
-	chars[1][3]=0x3700;
-	chars[1][4]=0xe00;
-	chars[1][5]=0xe00;
-	chars[1][6]=0x3700;
-	chars[1][7]=0x3000;
-	chars[1][8]=0x0;
-
 	// D
 	chars[68]=malloc(7*sizeof(uint16_t));
 	chars[68][0]=6;
@@ -243,11 +275,6 @@ uint16_t** get_char_table()
 	chars[68][4]=0x2020;
 	chars[68][5]=0x1040;
 	chars[68][6]=0xf80;
-
-	// Dot
-	chars[46]=malloc(2*sizeof(uint16_t));
-	chars[46][0]=1;
-	chars[46][1]=0x20;
 
 	// E
 	chars[69]=malloc(7*sizeof(uint16_t));
@@ -390,20 +417,6 @@ uint16_t** get_char_table()
 	chars[83][3]=0x2220;
 	chars[83][4]=0x2220;
 	chars[83][5]=0x11c0;
-
-	// Slash
-	chars[47]=malloc(5*sizeof(uint16_t));
-	chars[47][0]=4;
-	chars[47][1]=0x60;
-	chars[47][2]=0x180;
-	chars[47][3]=0x600;
-	chars[47][4]=0x1800;
-
-	// Space
-	chars[32]=malloc(3*sizeof(uint16_t));
-	chars[32][0]=2;
-	chars[32][1]=0x0;
-	chars[32][2]=0x0;
 
 	// T
 	chars[84]=malloc(6*sizeof(uint16_t));
@@ -692,17 +705,6 @@ uint16_t** get_char_table()
 	chars[122][3]=0x2a0;
 	chars[122][4]=0x320;
 	chars[122][5]=0x220;
-
-	// €
-	chars[2]=malloc(8*sizeof(uint16_t));
-	chars[2][0]=7;
-	chars[2][1]=0x500;
-	chars[2][2]=0xf80;
-	chars[2][3]=0x1540;
-	chars[2][4]=0x2520;
-	chars[2][5]=0x2020;
-	chars[2][6]=0x2020;
-	chars[2][7]=0x1040;
 
 	return chars;
 }

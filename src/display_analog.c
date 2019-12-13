@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "config.h"
 #include "clock.h"
 //#include "position.h"
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "config.h"
 #include "clock.h"
 #include "position.h"
 #include "letters.h"
@@ -220,22 +221,22 @@ int write_in_display(uint16_t * display, char * line1, char * line2)
 
 void get_data_to_print(char* line1, char* line2)
 {
-  // if(seconds%2){
-  //   sprintf(line1, "%02d:%02d", hours, minutes);
-  // }
-  // else {
-  //   sprintf(line1, "%02d %02d", hours, minutes);
-  // }
-  // sprintf(line2, "%c %02d %c", 1, seconds, 1);
-
-  if((seconds/2)%2){
-    sprintf(line1, "Creeper!");
-    sprintf(line2, "%c", 1);
+  if(seconds%2){
+    sprintf(line1, "%02d:%02d", hours, minutes);
   }
   else {
-    sprintf(line1, "%c Aww %c", 1, 1);
-    sprintf(line2, "man !");
+    sprintf(line1, "%02d %02d", hours, minutes);
   }
+  sprintf(line2, "%02d", seconds);
+
+  // if((seconds/2)%2){
+  //   sprintf(line1, "Creeper!");
+  //   sprintf(line2, "%c", 1);
+  // }
+  // else {
+  //   sprintf(line1, "%c Aww %c", 1, 1);
+  //   sprintf(line2, "man !");
+  // }
 }
 
 void compute_digital_display(uint16_t * display)
