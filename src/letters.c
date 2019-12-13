@@ -10,8 +10,6 @@ uint16_t** get_char_table()
 		chars[i] = default_char;
 	}
 
-
-
 	// Creeper
 	chars[1]=malloc(9*sizeof(uint16_t));
 	chars[1][0]=8;
@@ -24,16 +22,38 @@ uint16_t** get_char_table()
 	chars[1][7]=0x3000;
 	chars[1][8]=0x0;
 
+	// heart1
+	chars[2]=malloc(8*sizeof(uint16_t));
+	chars[2][0]=7;
+	chars[2][1]=0x60;
+	chars[2][2]=0xf0;
+	chars[2][3]=0xf8;
+	chars[2][4]=0x7c;
+	chars[2][5]=0xf8;
+	chars[2][6]=0xf0;
+	chars[2][7]=0x60;
+
+	// heart2
+	chars[3]=malloc(8*sizeof(uint16_t));
+	chars[3][0]=7;
+	chars[3][1]=0xc00;
+	chars[3][2]=0x1e00;
+	chars[3][3]=0x1f00;
+	chars[3][4]=0xf80;
+	chars[3][5]=0x1f00;
+	chars[3][6]=0x1e00;
+	chars[3][7]=0xc00;
+
 	// €
-	// chars[2]=malloc(8*sizeof(uint16_t));
-	// chars[2][0]=7;
-	// chars[2][1]=0x500;
-	// chars[2][2]=0xf80;
-	// chars[2][3]=0x1540;
-	// chars[2][4]=0x2520;
-	// chars[2][5]=0x2020;
-	// chars[2][6]=0x2020;
-	// chars[2][7]=0x1040;
+	chars[4]=malloc(8*sizeof(uint16_t));
+	chars[4][0]=7;
+	chars[4][1]=0x500;
+	chars[4][2]=0xf80;
+	chars[4][3]=0x1540;
+	chars[4][4]=0x2520;
+	chars[4][5]=0x2020;
+	chars[4][6]=0x2020;
+	chars[4][7]=0x1040;
 
 	// Space
 	chars[32]=malloc(3*sizeof(uint16_t));

@@ -3,11 +3,11 @@
 
 #include "clock.h"
 
-int8_t hours = -1;
-int8_t minutes = -1;
+int8_t hours = 0;
+int8_t minutes = 0;
 
-char hour_changed = 0;
-char minute_changed = 0;
+char hour_changed = 1;
+char minute_changed = 1;
 uint8_t prev_second = 0;
 
 void update(int8_t * to_update, int8_t based_on, char * already_updated, int max_value)
@@ -21,33 +21,14 @@ void update(int8_t * to_update, int8_t based_on, char * already_updated, int max
   }
 }
 
-void update_hour()
+inline void update_hour()
 {
   update(&hours, minutes, &hour_changed, 24);
-  // if (minutes == 0 && hour_changed == 0)
-  // {
-  //   hours = (hours + 1) % 24;
-  //   hour_changed = 1;
-  // }
-  // else if (minutes == 1)
-  // {
-  //   hour_changed = 0;
-  // }
 }
 
-void update_minute()
+inline void update_minute()
 {
   update(&minutes, seconds, &minute_changed, 60);
-
-  // if (seconds == 0 && minute_changed == 0)
-  // {
-  //   minutes = (minutes + 1) % 60;
-  //   minute_changed = 1;
-  // }
-  // else if (seconds == 1)
-  // {
-  //   minute_changed = 0;
-  // }
 }
 
 void update_time()
@@ -71,7 +52,7 @@ void set_time(int8_t h, int8_t m, int8_t s)
   minutes = MAX(m%60, 0);
   seconds = MAX(s%60, 0);
 
-  hour_changed = 1;
-  minute_changed = 1;
+  hour_changed = minutes ? 0 : 1;
+  minute_changed = seconds ? 0 : 1;
   prev_second = 61;
 }
