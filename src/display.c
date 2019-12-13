@@ -42,18 +42,18 @@ inline void init_display_array(){
 
 void (*init[NB_MODES])(uint16_t * display) = {&init_analog_display, &init_digital_display};
 
-void init_display(){
+inline void init_display(){
   init_display_array();
   init[mode](display);
 }
 
 void (*compute[NB_MODES])(uint16_t * display) = {&compute_analog_display, &compute_digital_display};
 
-void compute_display() {
+inline void compute_display() {
   compute[mode](display);
 }
 
-void display_strip()
+inline void display_strip()
 {
   leds_on(display[get_pos()]);
 }

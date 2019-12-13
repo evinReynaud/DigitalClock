@@ -1,7 +1,9 @@
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
 
-void debug_printf(char * b);
+#include "bluetooth.h"
+
+#define debug_printf(B) bluetooth_transmit(B)
 
 void debug_wait_input();
 
