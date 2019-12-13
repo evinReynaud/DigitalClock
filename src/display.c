@@ -4,12 +4,9 @@
 #include "leds.h"
 #include "clock.h"
 #include "position.h"
-
 #include "display_analog.h"
 #include "display_digital.h"
-
 #include "debug.h"
-
 #include "display.h"
 
 enum display_mode mode = ANALOG;
@@ -45,7 +42,7 @@ inline void init_display_array()
   }
 }
 
-void (*init[NB_MODES])(uint16_t *display) = {&init_analog_display, &init_digital_display, &init_digital_display};
+void (*init[NB_MODES])(uint16_t *display) = {&init_analog_display, &init_digital_display, &init_digital_display, &init_digital_display};
 
 void init_display()
 {
@@ -53,7 +50,7 @@ void init_display()
   init[mode](display);
 }
 
-void (*compute[NB_MODES])(uint16_t *display) = {&compute_analog_display, &compute_digital_display, &compute_custom_display};
+void (*compute[NB_MODES])(uint16_t *display) = {&compute_analog_display, &compute_digital_display, &compute_custom_display, &compute_love_display};
 
 void compute_display()
 {

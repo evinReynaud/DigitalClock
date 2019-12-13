@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <string.h>
-
 #include "config.h"
 #include "clock.h"
 #include "position.h"
 #include "letters.h"
 #include "interface.h"
 #include "debug.h"
-
 #include "display_digital.h"
 
 #define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)
@@ -202,13 +200,6 @@ int write_in_display(uint16_t *display, char *line1, char *line2)
   return write_first_line(display, line1) + write_second_line(display, line2);
 }
 
-void get_data_to_print_custom(char *line1, char *line2)
-{
-  sprintf(line1, "salut");
-  //debug_printf(line1);
-  sprintf(line2, "salut");
-}
-
 void get_data_to_print(char *line1, char *line2)
 {
   if (seconds % 2)
@@ -229,18 +220,20 @@ void get_data_to_print(char *line1, char *line2)
   //   sprintf(line1, "%c Aww %c", 1, 1);
   //   sprintf(line2, "man !");
   // }
+}
 
-  //Love
-  // if ((seconds / 2) % 2)
-  // {
-  //   sprintf(line1, "%c", 2);
-  //   sprintf(line2, "LOVE");
-  // }
-  // else
-  // {
-  //   sprintf(line1, "%c", 3);
-  //   sprintf(line2, "LOVE");
-  // }
+void get_data_to_print_love(char *line1, char *line2)
+{
+  if ((seconds / 2) % 2)
+  {
+    sprintf(line1, "%c", 2);
+    sprintf(line2, "LOVE");
+  }
+  else
+  {
+    sprintf(line1, "%c", 3);
+    sprintf(line2, "YOU");
+  }
 }
 
 void compute_digital_display(uint16_t *display)
@@ -252,7 +245,13 @@ void compute_digital_display(uint16_t *display)
 
 void compute_custom_display(uint16_t *display)
 {
-  //get_data_to_print_custom(line1, line2);
+  reset_display(display);
+  write_in_display(display, line1, line2);
+}
+
+void compute_love_display(uint16_t *display)
+{
+  get_data_to_print_love(line1, line2);
   reset_display(display);
   write_in_display(display, line1, line2);
 }

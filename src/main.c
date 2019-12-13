@@ -2,6 +2,7 @@
 #include "bluetooth.h"
 #include "display.h"
 #include "clock.h"
+#include "config.h"
 #include "interface.h"
 #include "position.h"
 #include "timer.h"
@@ -10,7 +11,7 @@
 
 void system_init()
 {
-  mode = DIGITAL;
+  mode = ANALOG;
   hours = 0;
   minutes = 0;
   seconds = 0;
@@ -35,7 +36,7 @@ void system_init()
 
 void soft_reset()
 {
-  mode = DIGITAL;
+  mode = ANALOG;
   hours = 0;
   minutes = 0;
   seconds = 0;
@@ -67,8 +68,3 @@ int main()
   }
   return 0;
 }
-
-// TODO:
-// Weld new motor (Junior)
-// Benchmark compute_display() for each mode, display_strip(), the hall effect interruption
-//

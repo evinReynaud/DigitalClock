@@ -7,20 +7,20 @@
 void pos_timer_start()
 {
   /* start timer clock */
-  TCCR3B |= _BV(CS30)|_BV(CS32);
+  TCCR3B |= _BV(CS30) | _BV(CS32);
 }
 
 void pos_timer_stop()
 {
-  TCCR3B &= ~(_BV(CS30)|_BV(CS31)|_BV(CS32)); /* stop timer clock */
-  ETIMSK &= ~_BV(TOIE3); /* disable interrupt */
+  TCCR3B &= ~(_BV(CS30) | _BV(CS31) | _BV(CS32)); /* stop timer clock */
+  ETIMSK &= ~_BV(TOIE3);                          /* disable interrupt */
 }
 
 void pos_timer_init()
 {
   /* normal mode */
-  TCCR3A &= ~((_BV(WGM30)|_BV(WGM31)));
-  TCCR3B &= ~((_BV(WGM33)|_BV(WGM32)));
+  TCCR3A &= ~((_BV(WGM30) | _BV(WGM31)));
+  TCCR3B &= ~((_BV(WGM33) | _BV(WGM32)));
   pos_timer_stop();
 }
 
@@ -40,7 +40,8 @@ uint16_t TIM16_ReadTCNT3()
   return val;
 }
 
-inline uint16_t pos_timer_read(){
+inline uint16_t pos_timer_read()
+{
   return TIM16_ReadTCNT3();
 }
 
@@ -58,6 +59,7 @@ void TIM16_WriteTCNT3(unsigned int i)
   SREG = sreg;
 }
 
-inline void pos_timer_write(uint16_t val){
+inline void pos_timer_write(uint16_t val)
+{
   TIM16_WriteTCNT3(val);
 }
