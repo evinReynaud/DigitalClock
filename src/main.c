@@ -8,7 +8,8 @@
 #include "effethall.h"
 #include "debug.h"
 
-void system_init(){
+void system_init()
+{
   mode = DIGITAL;
   hours = 0;
   minutes = 0;
@@ -32,7 +33,8 @@ void system_init(){
   debug_printf("Init done\n\n");
 }
 
-void soft_reset(){
+void soft_reset()
+{
   mode = DIGITAL;
   hours = 0;
   minutes = 0;
@@ -47,11 +49,13 @@ int main()
   send_info();
   while (1)
   {
-    if (reset == 1){
+    if (reset == 1)
+    {
       reset = 0;
       soft_reset();
     }
-    if (reset == 2){
+    if (reset == 2)
+    {
       reset = 0;
       system_init();
     }

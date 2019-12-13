@@ -7,6 +7,7 @@
 #include "clock.h"
 #include "effethall.h"
 #include "display.h"
+#include "display_digital.h"
 
 #include "debug.h"
 
@@ -20,8 +21,15 @@ int reset = 0;
 void send_info()
 {
   bluetooth_transmit("send H_hhmm to change hour\n");
-  bluetooth_transmit("send M_n  with n=1,2 to change mode\n");
-  bluetooth_transmit("send d_xxx to change the clock orientation (ex: d_-10)\n");
+  bluetooth_transmit("send M_n  with n=1,2,3 to change mode\n");
+  bluetooth_transmit("Mode 1: clock\n");
+  bluetooth_transmit("Mode 2: clock digital\n");
+  bluetooth_transmit("Mode 3: custom display\n");
+  bluetooth_transmit("in mode 3 send 1_text to change first text\n");
+  bluetooth_transmit("in mode 3 send 2_text to change second text\n");
+  bluetooth_transmit("send d_xx to change the delay for the hysterisis\n");
+  bluetooth_transmit("send O_xxx to change the clock orientation (ex: O_-10)\n");
+  bluetooth_transmit("send O_r to reset orientation\n");
   bluetooth_transmit("send r for a soft  restart\n");
   bluetooth_transmit("send R for a complete restart\n");
 }
@@ -44,14 +52,9 @@ void interface()
     if (strlen(data) == 0)
       return;
 
-    // bluetooth_transmit(data);
-    // char b[8];
-    // sprintf(b, "\n%d\n", strlen(data));
-    // debug_printf(b);
-
     if (data[0] == 'H')
     {
-      set_time(atoi(data + 2) / 100, atoi(data + 4), 0);
+      set_time(chartoi(data[2]) * 10 + chartoi(data[3]), chartoi(data[4]) * 10 + chartoi(data[5]), 0);
       bluetooth_transmit("hour changed\n");
     }
 
@@ -69,28 +72,49 @@ void interface()
     {
       reset = 2;
     }
-
     else if (data[0] == 'd')
     {
       char timer[17];
       strcpy(timer, data + 2);
-
       effethall_timer = atoi(timer);
-
       char b[64];
       sprintf(b, "Changed timer: %s -> %u\n", timer, effethall_timer);
       bluetooth_transmit(b);
     }
-    if (data[0] == 'M')
+    else if (data[0] == 'M' && data[2] == '1')
     {
-      int m = chartoi(data[2]) - 1;
-      if (m >= ANALOG && m < NB_MODES)
+      mode = ANALOG;
+      char b[64];
+      sprintf(b, "Changed mode: %d\n", mode);
+      bluetooth_transmit(b);
+      init_display();
+    }
+    else if (data[0] == 'M' && data[2] == '2')
+    {
+      mode = DIGITAL;
+      char b[64];
+      sprintf(b, "Changed mode: %d\n", mode);
+      bluetooth_transmit(b);
+    }
+    else if (data[0] == 'M' && data[2] == '3')
+    {
+      mode = CUSTOM_DIGITAL;
+      char b[64];
+      sprintf(b, "Changed mode: %d\n", mode);
+      bluetooth_transmit(b);
+    }
+    else if (data[0] == '1')
+    {
+      if (mode == CUSTOM_DIGITAL && strlen(data) < 15)
       {
-        mode = m;
-        char b[64];
-        sprintf(b, "Changed mode: %d\n", mode);
-        debug_printf(b);
-        init_display();
+        strcpy(line1, data + 2);
+      }
+    }
+    else if (data[0] == '2')
+    {
+      if (mode == CUSTOM_DIGITAL && strlen(data) < 15)
+      {
+        strcpy(line2, data + 2);
       }
     }
 

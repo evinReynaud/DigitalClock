@@ -11,7 +11,7 @@
 
 volatile uint16_t countPerTour = 1;
 
-uint16_t effethall_timer = 0;
+uint16_t effethall_timer = 8;
 
 #ifdef DEBUG_HALL
 volatile int c = 0;
@@ -20,18 +20,18 @@ volatile int c = 0;
 ISR(INT0_vect)
 {
   EIMSK &= ~(1 << INT0);
-  if(TCNT3 > effethall_timer)
+  if (TCNT3 > effethall_timer)
   {
     countPerTour = pos_timer_read();
     pos_timer_write(1);
-    #ifdef DEBUG_HALL
+#ifdef DEBUG_HALL
     leds_on(LEDS_ON);
     leds_on(LEDS_OFF);
 
     char b[8];
     sprintf(b, "%d\n", c++);
     debug_printf(b);
-    #endif
+#endif
   }
 }
 
@@ -42,7 +42,7 @@ void effethall_init()
   DDRD &= ~(1 << PIN0);
 
   // Detect falling edge
-  EICRA |=  (1 << ISC01);
+  EICRA |= (1 << ISC01);
   EICRA &= ~(1 << ISC00);
 
   // Allow external interrupt 0
@@ -50,20 +50,20 @@ void effethall_init()
   sei();
 
   countPerTour = 1;
-  effethall_timer = 0;
+  effethall_timer = 8;
 }
 
 inline void effethall_enable_interruption()
 {
-  if(TCNT3 > effethall_timer)
+  if (TCNT3 > effethall_timer)
   {
     // EIFR &= ~(1 << INTF0);
     EIFR |= (1 << INTF0);
     EIMSK |= (1 << INT0);
   }
 
-  #ifdef DEBUG_HALL
-  if(TCNT3 > 20000)
+#ifdef DEBUG_HALL
+  if (TCNT3 > 20000)
     c = 0;
-  #endif
+#endif
 }
