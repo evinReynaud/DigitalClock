@@ -1,6 +1,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdint.h>
+
 #include "timer.h"
+
+volatile uint8_t seconds = 0;
+volatile uint16_t time_count = 0;
 
 void timer_init(void)
 {

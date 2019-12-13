@@ -56,7 +56,7 @@ int main()
       system_init();
     }
     interface();
-    update_hour();
+    update_time();
     display_strip();
 
     check_position();
