@@ -155,6 +155,11 @@ uint16_t** get_char_table()
 	chars[57][4]=0x2220;
 	chars[57][5]=0x1dc0;
 
+	// :
+	chars[58]=malloc(2*sizeof(uint16_t));
+	chars[58][0]=1;
+	chars[58][1]=0x480;
+
 	// ;
 	chars[59]=malloc(2*sizeof(uint16_t));
 	chars[59][0]=1;
