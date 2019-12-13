@@ -7,6 +7,11 @@
 #include "timer.h"
 #include "effethall.h"
 #include "debug.h"
+#include <string.h>
+#ifdef BENCHMARK
+#include "benchmark.h"
+#endif
+
 
 void system_init(){
   mode = DIGITAL;
@@ -43,6 +48,47 @@ void soft_reset(){
 
 int main()
 {
+
+  #ifdef BENCHMARK
+  initBenchmark();
+  bluetooth_transmit("Tape start to begin benchmark\n");
+
+  //if (strlen(data) == 0)
+    //return;
+  //bluetooth_transmit("Tape start to begin benchmark \n");
+  if(receive)
+  {
+    char data[256];
+    bluetooth_wait_for_data(data);
+    if(strcmp(data,"start"))
+    {
+      do
+      {
+         getTimes();
+         if(receive)
+         {
+           char data[256];
+           bluetooth_wait_for_data(data);
+           receive = 0;
+         }
+      } while(strcmp(data,"stop"));
+    }
+    else
+    {
+      do {
+        char data[256];
+        bluetooth_wait_for_data(data);
+        receive = 0;
+      }while(strcmp(data,"start")==0 || strcmp(data,"stop")==1);
+    }
+  }
+
+  char b[1000];
+  sprintf(b,"Time In Interruption %lf\n Time for analog display %lf\n Time for digital display %lf\n Time for displaying a strip %lf\n Number of repetition  %d\n", timeInInterrup,analogTime,digitalTime,displayTime,count);
+  bluetooth_transmit(b);
+  bluetooth_transmit("end\n");
+
+  #else
   system_init();
   send_info();
   while (1)
@@ -61,6 +107,8 @@ int main()
 
     check_position();
   }
+  #endif
+
   return 0;
 }
 
