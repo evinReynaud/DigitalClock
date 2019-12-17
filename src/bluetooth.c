@@ -19,12 +19,12 @@ void bluetooth_transmit_char(char data)
 
 void bluetooth_wait_for_data(char *buff)
 {
-  char c;
-  do {
-    c = bluetooth_receive_char();
+  char c = bluetooth_receive_char();
+  while (c > 31) {
     *buff = c;
     buff++;
-  } while (c != '\n');
+    c = bluetooth_receive_char();
+  }
   *buff = '\0';
 }
 

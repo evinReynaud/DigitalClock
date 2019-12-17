@@ -1,25 +1,27 @@
 #ifndef __BENCHMARK_H__
 #define __BENCHMARK_H__
-#include <stdlib.h>
 
+
+
+extern volatile  int timeInInterrup;
+extern volatile  int analogTime ;
+extern volatile  int digitalTime ;
+extern volatile  int displayTime ;
 
 void initBenchmark();
 
-double getAnalogTime();
-void receive_init();
+int getAnalogTime();
+//void receive_init();
 
 
-double getDigitalTime();
+int getDigitalTime();
 
-double getDisplayTime();
+int getDisplayTime();
 void getTimes();
 
-extern volatile double timeInInterrup;
-extern volatile double analogTime;
-extern volatile double digitalTime;
-extern volatile double displayTime;
-extern volatile int count;
-extern volatile int receive ;
+
+//extern volatile int count;
+//extern volatile int receive ;
 
 
 #endif
