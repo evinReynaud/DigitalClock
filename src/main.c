@@ -51,11 +51,11 @@ int main()
 
   #ifdef BENCHMARK
   initBenchmark();
-  bluetooth_transmit("Tape start to begin benchmark\n");
+  bluetooth_transmit("Type start to begin benchmark\n");
 
   //if (strlen(data) == 0)
     //return;
-  //bluetooth_transmit("Tape start to begin benchmark \n");
+  //bluetooth_transmit("Type start to begin benchmark \n");
   if(receive)
   {
     char data[256];

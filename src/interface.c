@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "usart.h"
 #include "bluetooth.h"
 #include "clock.h"
 #include "effethall.h"
@@ -42,13 +41,19 @@ void set_effethall_timer(char * data)
 void set_mode(char * data)
 {
   int m = atoi(data+2) - 1;
+  char b1[64];
+  sprintf(b1, "mode %d\n", mode);
+  debug_printf(b1);
   if (m >= ANALOG && m < NB_MODES) {
+    debug_printf("A\n");
     mode = m;
+    debug_printf("B\n");
     init_display();
+    debug_printf("C\n");
 
-    char b[64];
-    sprintf(b, "Changed to mode %d\n", mode);
-    bluetooth_transmit(b);
+    // sprintf(data, "Changed to mode %d\n", m+1);
+    debug_printf("D\n");
+    // bluetooth_transmit(data);
   }
 }
 
