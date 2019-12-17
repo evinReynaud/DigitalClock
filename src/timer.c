@@ -7,7 +7,7 @@
 volatile uint8_t seconds = 0;
 volatile uint16_t time_count = 0;
 
-void timer_init(void)
+void timer_init()
 {
     sei();
     /* fast pwm mode = on s'arrete quand on arrive à la valeur que l'on a fixé */
@@ -16,7 +16,7 @@ void timer_init(void)
     timer_stop(); // on veut pas qu'il commence à compter tout de suite
 }
 
-void timer_start(void)
+void timer_start()
 {
     timer_init();
     OCR1AH = 0b00000110; // on a 2* 8 bits car on est à 16 bits avec le timer 1
@@ -27,7 +27,7 @@ void timer_start(void)
     seconds = 0;
 }
 
-void timer_stop(void)
+void timer_stop()
 {
     TCCR1B &= ~(_BV(CS10) | _BV(CS11) | _BV(CS12)); /* stop timer clock */
     TIMSK &= ~_BV(TOIE1);                           /* disable interrupt */
