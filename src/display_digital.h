@@ -1,6 +1,8 @@
 #ifndef __DISPLAY_DIGITAL_H__
 #define __DISPLAY_DIGITAL_H__
 
+#include <stdint.h>
+
 extern char line1[16];
 extern char line2[16];
 
