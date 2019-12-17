@@ -9,8 +9,6 @@
 #include "display_digital.h"
 #include "position.h"
 
-#include "debug.h"
-
 #include "interface.h"
 
 int reset = 0;

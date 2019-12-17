@@ -29,6 +29,7 @@ void USART_transmit(char data)
   UDR0 = data;
 }
 
+// Returns a non-zero value if bluetooth data is waiting to be read
 inline int USART_data_ready()
 {
   return (UCSR0A & (1 << RXC0));

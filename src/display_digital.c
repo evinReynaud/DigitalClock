@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+
 #include "config.h"
 #include "clock.h"
 #include "position.h"
 #include "letters.h"
-#include "interface.h"
-#include "debug.h"
+
 #include "display_digital.h"
 
 #define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)

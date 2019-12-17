@@ -8,32 +8,11 @@
 #include "display_analog.h"
 #include "display_digital.h"
 
-#include "debug.h"
-
 #include "display.h"
 
 enum display_mode mode = ANALOG;
 
 uint16_t display[POS_IN_A_TURN]; // The array in which we store our led configs
-
-#ifndef COUNTERCLOCKWISE
-// clockwise
-
-#else
-// counterclockwise
-
-#endif
-
-void debug_show_array()
-{
-  char b[16];
-  for(int pos = 0; pos < POS_IN_A_TURN; pos++){
-    if(display[pos] != 0){
-      sprintf(b, "%03d: %x\n", pos, display[pos]);
-      debug_printf(b);
-    }
-  }
-}
 
 inline void init_display_array(){
   for(int pos = 0; pos < POS_IN_A_TURN; pos++){

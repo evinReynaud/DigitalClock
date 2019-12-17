@@ -2,9 +2,6 @@
 #include <util/delay.h>
 #include <stdint.h>
 
-//LE=PE5
-//OE=PE4
-
 void SPI_master_init()
 {
   DDRE = (1 << DDE5) | (1 << DDE4);

@@ -3,6 +3,8 @@
 
 #include "clock.h"
 
+#define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)
+
 int8_t hours = 0;
 int8_t minutes = 0;
 
@@ -42,9 +44,6 @@ void update_time()
     compute_display();
   }
 }
-
-
-#define MAX(X, Y) ((X) > (Y)) ? (X) : (Y)
 
 void set_time(int8_t h, int8_t m, int8_t s)
 {

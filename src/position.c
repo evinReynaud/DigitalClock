@@ -1,8 +1,4 @@
-#include <util/delay.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <stdio.h>
-#include "interface.h"
+#include <stdint.h>
 
 #include "config.h"
 #include "pos_timer.h"
