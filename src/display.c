@@ -24,7 +24,8 @@ uint16_t display[POS_IN_A_TURN]; // The array in which we store our led configs
 
 #endif
 
-void debug_show_array(){
+void debug_show_array()
+{
   char b[16];
   for(int pos = 0; pos < POS_IN_A_TURN; pos++){
     if(display[pos] != 0){
@@ -40,14 +41,14 @@ inline void init_display_array(){
   }
 }
 
-void (*init[NB_MODES])(uint16_t * display) = {&init_analog_display, &init_digital_display};
+void (*init[NB_MODES])(uint16_t * display) = {&init_analog_display, &init_digital_display, &init_digital_display, &init_digital_display};
 
 inline void init_display(){
   init_display_array();
   init[mode](display);
 }
 
-void (*compute[NB_MODES])(uint16_t * display) = {&compute_analog_display, &compute_digital_display};
+void (*compute[NB_MODES])(uint16_t * display) = {&compute_analog_display, &compute_digital_display, &compute_custom_display, &compute_love_display};
 
 inline void compute_display() {
   compute[mode](display);

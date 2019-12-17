@@ -16,7 +16,9 @@
 #include "effethall.h"
 
 volatile uint16_t countPerTour = 1;
+
 uint16_t effethall_timer = 0;
+
 #ifdef DEBUG_HALL
 volatile int c = 0;
 #endif
@@ -60,7 +62,7 @@ void effethall_init()
   DDRD &= ~(1 << PIN0);
 
   // Detect falling edge
-  EICRA |=  (1 << ISC01);
+  EICRA |= (1 << ISC01);
   EICRA &= ~(1 << ISC00);
 
   // Allow external interrupt 0
@@ -73,9 +75,7 @@ void effethall_init()
 
 inline void effethall_enable_interruption()
 {
-  EIFR |= (1 << INTF0);
-  EIMSK |= (1 << INT0);
-  if(TCNT3 > effethall_timer)
+  if (TCNT3 > effethall_timer)
   {
     // EIFR &= ~(1 << INTF0);
     EIFR |= (1 << INTF0);
@@ -83,7 +83,7 @@ inline void effethall_enable_interruption()
   }
 
   #ifdef DEBUG_HALL
-  if(TCNT3 > 20000)
+  if (TCNT3 > 20000)
     c = 0;
   #endif
 

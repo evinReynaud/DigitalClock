@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "leds.h"
 #include "bluetooth.h"
 #include "display.h"

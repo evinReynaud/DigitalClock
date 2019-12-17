@@ -3,6 +3,7 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include "interface.h"
+
 #include "config.h"
 #include "pos_timer.h"
 #include "effethall.h"
@@ -21,7 +22,7 @@ void position_init()
 uint32_t get_pos()
 {
   uint32_t t = (uint32_t) pos_timer_read();
-  return (offset + (t*POS_IN_A_TURN/countPerTour))%POS_IN_A_TURN;
+  return (offset + (t * POS_IN_A_TURN / countPerTour)) % POS_IN_A_TURN;
 }
 
 inline void check_position()

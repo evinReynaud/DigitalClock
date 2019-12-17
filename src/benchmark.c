@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "display.h"
 #include "position.h"
 #include "pos_timer.h"
@@ -27,18 +29,8 @@ void initBenchmark()
   pos_timer_init();
   bluetooth_init();
   pos_timer_init();
-  receive_init();
+  // receive_init();
   leds_init();
-}
-
-ISR(USART0_RX_vect)
-{
-  receive = 1;
-}
-
-void receive_init()
-{
-  UCSR0B = _BV(RXCIE0);
 }
 
 void getTimes()

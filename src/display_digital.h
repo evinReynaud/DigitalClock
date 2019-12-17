@@ -8,4 +8,8 @@ void init_digital_display(uint16_t * display);
 
 void compute_digital_display(uint16_t * display);
 
+void compute_custom_display(uint16_t *display);
+
+void compute_love_display(uint16_t *display);
+
 #endif
