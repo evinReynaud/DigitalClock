@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <avr/io.h>
 
 #include "leds.h"
 #include "bluetooth.h"
@@ -7,16 +9,17 @@
 #include "interface.h"
 #include "position.h"
 #include "timer.h"
-#include "effethall.h"
+
 #include "debug.h"
-#include <string.h>
+
 #ifdef BENCHMARK
 #include "benchmark.h"
 #endif
 
 
-void system_init(){
-  mode = DIGITAL;
+void system_init()
+{
+  mode = ANALOG;
   hours = 0;
   minutes = 0;
   seconds = 0;
@@ -39,13 +42,12 @@ void system_init(){
   debug_printf("Init done\n\n");
 }
 
-void soft_reset(){
-  mode = DIGITAL;
-  hours = 0;
-  minutes = 0;
-  seconds = 0;
-  init_display();
-  position_init();
+void hard_reset()
+{
+  // turn on AVR watchdog and force it to restart the chip by infinite loop
+  WDTCR=0x18;
+  WDTCR=0x08;
+  while(1);
 }
 
 int main()
@@ -64,8 +66,7 @@ int main()
     bluetooth_wait_for_data(data);
     if(strcmp(data,"start"))
     {
-      do
-      {
+      do {
          getTimes();
          if(receive)
          {
@@ -75,8 +76,7 @@ int main()
          }
       } while(strcmp(data,"stop"));
     }
-    else
-    {
+    else {
       do {
         char data[256];
         bluetooth_wait_for_data(data);
@@ -93,16 +93,11 @@ int main()
   #else
   system_init();
   send_info();
-  while (1)
-  {
-    if (reset == 1){
-      reset = 0;
-      soft_reset();
+  while (1) {
+    if(reset) {
+      hard_reset();
     }
-    if (reset == 2){
-      reset = 0;
-      system_init();
-    }
+
     interface();
     update_time();
     display_strip();
@@ -113,8 +108,3 @@ int main()
 
   return 0;
 }
-
-// TODO:
-// Weld new motor (Junior)
-// Benchmark compute_display() for each mode, display_strip(), the hall effect interruption
-//

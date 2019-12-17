@@ -47,7 +47,8 @@ void reset_display(uint16_t *display)
 
 void init_digital_display(uint16_t *display)
 {
-  chars = get_char_table();
+  if(chars == NULL)
+    chars = get_char_table(chars);
   line1[0] = '\0';
   line2[0] = '\0';
 

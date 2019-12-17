@@ -3,8 +3,6 @@
 #include "config.h"
 #include "clock.h"
 
-#include "debug.h"
-
 #include "display_analog.h"
 
 #define MINS_IN_HALF_A_DAY 720
@@ -72,10 +70,6 @@ void init_analog_display(uint16_t *display)
   {
     display[hour_mark[h]] |= HOUR_MARK;
   }
-
-  char b[64];
-  sprintf(b, "%u, %d, %d\n\n", h_pos, m_pos, s_pos);
-  debug_printf(b);
 
   display[h_pos] |= HOUR_HAND;
   display[m_pos] |= MINUTE_HAND;
