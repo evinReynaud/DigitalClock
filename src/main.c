@@ -16,13 +16,10 @@
 #include "benchmark.h"
 #endif
 
-
 void system_init()
 {
   mode = ANALOG;
-  hours = 0;
-  minutes = 0;
-  seconds = 0;
+  set_time(0, 0, 0);
   bluetooth_init();
   #ifdef VERBOSE
   debug_printf("=================\nStart init\n");
@@ -62,47 +59,8 @@ void hard_reset()
   while(1);
 }
 
-int main()
+int clock_main()
 {
-
-  #ifdef BENCHMARK
-  initBenchmark();
-  bluetooth_transmit("Type start to begin benchmark\n");
-
-  //if (strlen(data) == 0)
-    //return;
-  //bluetooth_transmit("Type start to begin benchmark \n");
-  if(receive)
-  {
-    char data[256];
-    bluetooth_wait_for_data(data);
-    if(strcmp(data,"start"))
-    {
-      do {
-         getTimes();
-         if(receive)
-         {
-           char data[256];
-           bluetooth_wait_for_data(data);
-           receive = 0;
-         }
-      } while(strcmp(data,"stop"));
-    }
-    else {
-      do {
-        char data[256];
-        bluetooth_wait_for_data(data);
-        receive = 0;
-      }while(strcmp(data,"start")==0 || strcmp(data,"stop")==1);
-    }
-  }
-
-  char b[1000];
-  sprintf(b,"Time In Interruption %lf\n Time for analog display %lf\n Time for digital display %lf\n Time for displaying a strip %lf\n Number of repetition  %d\n", timeInInterrup,analogTime,digitalTime,displayTime,count);
-  bluetooth_transmit(b);
-  bluetooth_transmit("end\n");
-
-  #else
   system_init();
   send_info();
   while (1) {
@@ -116,7 +74,54 @@ int main()
 
     check_position();
   }
-  #endif
+  return 0;
+}
+
+#ifdef BENCHMARK
+int getStop()
+{
+  if(bluetooth_data_ready())
+  {
+    char data[256];
+    bluetooth_wait_for_data(data);
+    debug_printf(data);
+    if(strcmp(data,"stop")==0) return 1;
+    else return 0;
+  }
+  else return 0;
+}
+
+int benchmark_main()
+{
+  initBenchmark();
+
+  bluetooth_transmit("Type start to begin benchmark\n");
+  int count = 0;
+  char data[256];
+  bluetooth_wait_for_data(data);
+  int stop = 0;
+  if(strcmp(data,"start")==0) {
+    do {
+        getTimes();
+        count++;
+        stop = getStop();
+    } while(!stop && count<100);
+  }
+
+  char b[256];
+  sprintf(b,"Time In Interruption %d\n Time for analog display %d\n Time for digital display %d\n Time for displaying a strip %d\n Number of repetition  %d\n", timeInInterrup,analogTime,digitalTime,displayTime,count);
+  bluetooth_transmit(b);
+  bluetooth_transmit("end\n");
 
   return 0;
+}
+#endif
+
+int main()
+{
+  #ifdef BENCHMARK
+  return benchmark_main();
+  #else
+  return clock_main();
+  #endif
 }
