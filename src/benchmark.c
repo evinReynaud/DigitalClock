@@ -6,7 +6,7 @@
 #include "pos_timer.h"
 #include "bluetooth.h"
 #include "clock.h"
-#include "effethall.h"
+#include "hall_effect.h"
 #include "interface.h"
 #include "leds.h"
 
@@ -26,7 +26,7 @@ void initBenchmark()
   pos_timer_init();
   bluetooth_init();
   leds_init();
-  effethall_init();
+  hall_effect_init();
 }
 
 void getTimes()
@@ -76,7 +76,7 @@ int getDisplayTime()
 {
   uint16_t begining, end;
 
-  effethall_init();
+  hall_effect_init();
   pos_timer_write(1);
   pos_timer_start();
   begining = pos_timer_read();

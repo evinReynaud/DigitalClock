@@ -11,11 +11,11 @@
 #include "bluetooth.h"
 #endif
 
-#include "effethall.h"
+#include "hall_effect.h"
 
 volatile uint16_t countPerTour = 1;
 
-uint16_t effethall_timer = 0;
+uint16_t hall_effect_timer = 0;
 
 #ifdef DEBUG_HALL
 volatile int c = 0;
@@ -49,7 +49,7 @@ ISR(INT0_vect)
   #endif
 }
 
-void effethall_init()
+void hall_effect_init()
 {
   cli();
   // Change pin 0 on bus D to an input by changing bit 0 to zero
@@ -64,16 +64,16 @@ void effethall_init()
   sei();
 
   countPerTour = 1;
-  effethall_timer = 0;
+  hall_effect_timer = 0;
   #ifdef BENCHMARK
   EIFR |= (1 << INTF0);
   #else
   #endif
 }
 
-inline void effethall_enable_interruption()
+inline void hall_effect_enable_interruption()
 {
-  if(TCNT3 > effethall_timer) {
+  if(TCNT3 > hall_effect_timer) {
     EIFR |= (1 << INTF0);
     EIMSK |= (1 << INT0);
   }

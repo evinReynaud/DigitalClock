@@ -4,7 +4,7 @@
 
 #include "bluetooth.h"
 #include "clock.h"
-#include "effethall.h"
+#include "hall_effect.h"
 #include "display.h"
 #include "display_digital.h"
 #include "position.h"
@@ -29,15 +29,15 @@ void send_info()
   bluetooth_transmit("Send R to restart the clock\n");
 }
 
-void set_effethall_timer(char * data)
+void set_hall_effect_timer(char * data)
 {
   char timer[17];
   strcpy(timer, data + 2);
 
-  effethall_timer = atoi(timer);
+  hall_effect_timer = atoi(timer);
 
   char b[64];
-  sprintf(b, "Changed timer to %u\n", effethall_timer);
+  sprintf(b, "Changed timer to %u\n", hall_effect_timer);
   bluetooth_transmit(b);
 }
 
@@ -94,7 +94,7 @@ void interface()
     break;
 
     case 'd':
-    set_effethall_timer(data);
+    set_hall_effect_timer(data);
     break;
 
     case 'M':

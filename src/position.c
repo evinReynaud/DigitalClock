@@ -2,7 +2,7 @@
 
 #include "config.h"
 #include "pos_timer.h"
-#include "effethall.h"
+#include "hall_effect.h"
 
 #include "position.h"
 
@@ -11,7 +11,7 @@ int offset = 0;
 void position_init()
 {
   pos_timer_init();
-  effethall_init();
+  hall_effect_init();
   pos_timer_start();
 }
 
@@ -23,5 +23,5 @@ uint32_t get_pos()
 
 inline void check_position()
 {
-  effethall_enable_interruption();
+  hall_effect_enable_interruption();
 }

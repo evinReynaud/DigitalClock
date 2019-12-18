@@ -4,10 +4,10 @@
 #include <stdint.h>
 
 extern volatile uint16_t countPerTour;
-extern uint16_t effethall_timer;
+extern uint16_t hall_effect_timer;
 
-void effethall_init();
+void hall_effect_init();
 
-void effethall_enable_interruption();
+void hall_effect_enable_interruption();
 
 #endif
