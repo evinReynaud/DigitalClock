@@ -21,7 +21,6 @@ volatile  int analogTime =0 ;
 volatile  int digitalTime =0;
 volatile  int displayTime =0;
 
-
 void initBenchmark()
 {
   pos_timer_init();
@@ -73,8 +72,6 @@ int getDigitalTime()
   return end-begining;
 }
 
-
-
 int getDisplayTime()
 {
   uint16_t begining, end;
@@ -89,6 +86,6 @@ int getDisplayTime()
   end = pos_timer_read();
   pos_timer_write(1);
   pos_timer_stop();
-  
+
   return end-begining;
 }
