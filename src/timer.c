@@ -36,8 +36,7 @@ void timer_stop()
 ISR(TIMER1_OVF_vect) /* timer 1 interrupt service routine */
 {
     time_count -= 1;
-    if (time_count == 0) // One second has passed
-    {
+    if (time_count == 0) { // One second has passed
         time_count = 1000;
         seconds = (seconds + 1) % 60;
     }

@@ -10,8 +10,6 @@
 #include "position.h"
 #include "timer.h"
 
-#include "debug.h"
-
 #ifdef BENCHMARK
 #include "benchmark.h"
 #endif
@@ -72,6 +70,7 @@ int clock_main()
     update_time();
     display_strip();
 
+    // Reset hall effect interruption
     check_position();
   }
   return 0;
@@ -80,13 +79,13 @@ int clock_main()
 #ifdef BENCHMARK
 int getStop()
 {
-  if(bluetooth_data_ready())
-  {
-    char data[256];
+  if(bluetooth_data_ready()) {
+    char data[16];
     bluetooth_wait_for_data(data);
-    debug_printf(data);
-    if(strcmp(data,"stop")==0) return 1;
-    else return 0;
+    if(strcmp(data,"stop")==0)
+      return 1;
+    else
+      return 0;
   }
   else return 0;
 }

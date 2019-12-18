@@ -24,22 +24,19 @@ volatile int c = 0;
 ISR(INT0_vect)
 {
   #ifdef BENCHMARK
-  uint16_t debut, fin;
-  pos_timer_start();
-  debut = pos_timer_read();
-  //EIMSK &= ~(1 << INT0);
-  countPerTour = pos_timer_read();
-  #ifdef DEBUG_HALL
-  leds_on(LEDS_ON);
-  leds_on(LEDS_OFF);
-  #endif
-  fin=pos_timer_read();
+  uint16_t begining, end;
+
   pos_timer_write(1);
+  pos_timer_start();
+  begining = pos_timer_read();
+
+  // We invert the operations to have the most accurate measure possible while doing the same operations
+  pos_timer_write(1);
+  countPerTour = pos_timer_read();
+
+  end = pos_timer_read();
   pos_timer_stop();
-  timeInInterrup += (fin-debut);
-  // char b[1000];
-  // sprintf(b,"analog time %d\n",timeInInterrup);
-  // bluetooth_transmit(b);
+  timeInInterrup += end-begining;
 
   #else
   EIMSK &= ~(1 << INT0);
@@ -85,6 +82,4 @@ inline void effethall_enable_interruption()
   if (TCNT3 > 20000)
     c = 0;
   #endif
-
-
 }

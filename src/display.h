@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "config.h"
+
 extern enum display_mode { ANALOG,
                            DIGITAL,
                            CUSTOM_DIGITAL,

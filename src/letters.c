@@ -6,7 +6,7 @@ uint16_t** get_char_table()
 	uint16_t** chars = malloc(256*sizeof(uint16_t*));
 	uint16_t* default_char = malloc(2*sizeof(uint16_t));
 	default_char[0] = 1, default_char[1] = 0;
-	for(int i = 0; i < 256; i++){
+	for(int i = 0; i < 256; i++) {
 		chars[i] = default_char;
 	}
 

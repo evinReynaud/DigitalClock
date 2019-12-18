@@ -15,18 +15,18 @@ int reset = 0;
 
 void send_info()
 {
-  bluetooth_transmit("send H_hhmm to change hour\n");
-  bluetooth_transmit("send M_n  with n=1,2,3 to change mode\n");
-  bluetooth_transmit("Mode 1: clock\n");
-  bluetooth_transmit("Mode 2: clock digital\n");
-  bluetooth_transmit("Mode 3: custom display\n");
-  bluetooth_transmit("Mode 4: gif love\n");
-  bluetooth_transmit("in mode 3 send 1_text to change first text\n");
-  bluetooth_transmit("in mode 3 send 2_text to change second text\n");
-  bluetooth_transmit("send O_xxx to change the clock orientation (ex: O_-10)\n");
-  bluetooth_transmit("send O_r to reset orientation\n");
-  bluetooth_transmit("send d_xx to change the delay for the hysterisis (d_8 is fine) \n");
-  bluetooth_transmit("send R to restart the clock\n");
+  bluetooth_transmit("Send H_hhmm to change hour\n");
+  bluetooth_transmit("Send M_n  with n=1,2,3 to change mode\n");
+  bluetooth_transmit("\tMode 1: clock\n");
+  bluetooth_transmit("\tMode 2: clock digital\n");
+  bluetooth_transmit("\tMode 3: custom display\n");
+  bluetooth_transmit("\tMode 4: gif love\n");
+  bluetooth_transmit("\t\tIn mode 3 send 1_text to change first text\n");
+  bluetooth_transmit("\t\tIn mode 3 send 2_text to change second text\n");
+  bluetooth_transmit("Send O_xxx to change the clock orientation (ex: O_-10)\n");
+  bluetooth_transmit("Send O_r to reset orientation\n");
+  bluetooth_transmit("Send d_xx to change the delay for the hysterisis (d_8 is fine) \n");
+  bluetooth_transmit("Send R to restart the clock\n");
 }
 
 void set_effethall_timer(char * data)
@@ -56,8 +56,7 @@ void set_offset(char *data)
 {
   if (data[2] == 'r')
     offset = 0;
-  else
-  {
+  else {
     int m = -atoi(data + 2);
     while (m < 0)
       m += POS_IN_A_TURN;
@@ -74,7 +73,7 @@ void interface()
   bluetooth_wait_for_data(data);
   if (strlen(data) == 0)
     return;
-  switch(data[0]){
+  switch(data[0]) {
     case 'H':
     set_time(atoi(data + 2) / 100, atoi(data + 4), 0);
     bluetooth_transmit("hour changed\n");
@@ -103,17 +102,13 @@ void interface()
     break;
 
     case '1':
-    if (mode == CUSTOM_DIGITAL && strlen(data) < 15)
-    {
+    if (mode == CUSTOM_DIGITAL && strlen(data) < 17)
       strcpy(line1, data + 2);
-    }
     break;
 
     case '2':
-    if (mode == CUSTOM_DIGITAL && strlen(data) < 15)
-    {
+    if (mode == CUSTOM_DIGITAL && strlen(data) < 17)
       strcpy(line2, data + 2);
-    }
     break;
   }
 }

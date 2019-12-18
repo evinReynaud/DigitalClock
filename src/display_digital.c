@@ -34,7 +34,6 @@ uint16_t **chars = NULL;
 
 #else
 // counterclockwise
-#define WRITING_START_POS 3 * POS_IN_A_TURN / 4
 
 #endif
 
@@ -84,9 +83,7 @@ unsigned int pixel_length(char *line, unsigned int *line_width, unsigned int max
 void write_in(uint16_t *display, int pos, uint16_t val)
 {
   while (pos < 0)
-  {
     pos += POS_IN_A_TURN;
-  }
   pos %= POS_IN_A_TURN;
   display[pos] = val;
 }
@@ -98,8 +95,7 @@ uint16_t binary_mirror(uint16_t num)
   uint16_t r = num;                   // r will be reversed bits of num; first get LSB of num
   int s = sizeof(num) * CHAR_BIT - 1; // extra shift needed at end
 
-  for (num >>= 1; num; num >>= 1)
-  {
+  for (num >>= 1; num; num >>= 1) {
     r <<= 1;
     r |= num & 1;
     s--;
@@ -108,8 +104,7 @@ uint16_t binary_mirror(uint16_t num)
 
   // Shift to the bottom
   s = 3;
-  while (s)
-  {
+  while (s) {
     r <<= 1;
     s--;
   }
@@ -122,30 +117,22 @@ int write_first_line(uint16_t *display, char *line)
   int len = pixel_length(line, &line_width, FIRST_LINE_STOP_POS - FIRST_LINE_START_POS);
   int display_pos = MAX(FIRST_LINE_START_POS + (FIRST_LINE_STOP_POS - FIRST_LINE_START_POS - len) / 2, FIRST_LINE_START_POS);
 
-  for (unsigned int c = 0; line[c] != '\0'; c++)
-  {
-    for (unsigned int i = 1; i <= chars[(int)line[c]][0]; i++)
-    {
-      for (unsigned int j = 0; j < line_width; j++)
-      {
-        if (display_pos < FIRST_LINE_STOP_POS)
-        {
+  for (unsigned int c = 0; line[c] != '\0'; c++) {
+    for (unsigned int i = 1; i <= chars[(int)line[c]][0]; i++) {
+      for (unsigned int j = 0; j < line_width; j++) {
+        if (display_pos < FIRST_LINE_STOP_POS) {
           write_in(display, display_pos++, chars[(int)line[c]][i]);
         }
-        else
-        {
+        else {
           return 1;
         }
       }
     }
-    for (unsigned int j = 0; j < line_width; j++)
-    {
-      if (display_pos < FIRST_LINE_STOP_POS)
-      {
+    for (unsigned int j = 0; j < line_width; j++) {
+      if (display_pos < FIRST_LINE_STOP_POS) {
         write_in(display, display_pos++, 0);
       }
-      else
-      {
+      else {
         return 1;
       }
     }
@@ -159,32 +146,22 @@ int write_second_line(uint16_t *display, char *line)
   int len = pixel_length(line, &line_width, SECOND_LINE_START_POS + POS_IN_A_TURN - SECOND_LINE_STOP_POS);
   int display_pos = MIN(len / 2, SECOND_LINE_START_POS);
 
-  for (unsigned int c = 0; line[c] != '\0'; c++)
-  {
-    for (unsigned int i = 1; i <= chars[(int)line[c]][0]; i++)
-    {
-      for (unsigned int j = 0; j < line_width; j++)
-      {
-        if (display_pos > SECOND_LINE_STOP_POS - POS_IN_A_TURN)
-        {
-          write_in(display, display_pos, binary_mirror(chars[(int)line[c]][i]));
-          display_pos--;
+  for (unsigned int c = 0; line[c] != '\0'; c++) {
+    for (unsigned int i = 1; i <= chars[(int)line[c]][0]; i++) {
+      for (unsigned int j = 0; j < line_width; j++) {
+        if (display_pos > SECOND_LINE_STOP_POS - POS_IN_A_TURN) {
+          write_in(display, display_pos--, binary_mirror(chars[(int)line[c]][i]));
         }
-        else
-        {
+        else {
           return 1;
         }
       }
     }
-    for (unsigned int j = 0; j < line_width; j++)
-    {
-      if (display_pos > SECOND_LINE_STOP_POS - POS_IN_A_TURN)
-      {
-        write_in(display, display_pos, 0);
-        display_pos--;
+    for (unsigned int j = 0; j < line_width; j++) {
+      if (display_pos > SECOND_LINE_STOP_POS - POS_IN_A_TURN) {
+        write_in(display, display_pos--, 0);
       }
-      else
-      {
+      else {
         return 1;
       }
     }
@@ -200,12 +177,10 @@ int write_in_display(uint16_t *display, char *line1, char *line2)
 
 void get_data_to_print(char *line1, char *line2)
 {
-  if (seconds % 2)
-  {
+  if (seconds % 2) {
     sprintf(line1, "%02d:%02d", hours, minutes);
   }
-  else
-  {
+  else {
     sprintf(line1, "%02d %02d", hours, minutes);
   }
   sprintf(line2, "%02d", seconds);
@@ -213,17 +188,6 @@ void get_data_to_print(char *line1, char *line2)
 
 void get_data_to_print_love(char *line1, char *line2)
 {
-  // if ((seconds / 2) % 2)
-  // {
-  //   sprintf(line1, "%c", 2);
-  //   sprintf(line2, "LOVE");
-  // }
-  // else
-  // {
-  //   sprintf(line1, "%c", 3);
-  //   sprintf(line2, "YOU");
-  // }
-
   switch(seconds%4) {
     case 0:
     sprintf(line1, "%c", 2);

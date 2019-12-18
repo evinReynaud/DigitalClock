@@ -77,7 +77,6 @@ void init_analog_display(uint16_t *display)
 
 void compute_analog_display(uint16_t *display)
 {
-
   // Remove the hour and minute hands
   display[h_pos] &= ~(HOUR_HAND);
   display[m_pos] &= ~(MINUTE_HAND);

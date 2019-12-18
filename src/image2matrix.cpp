@@ -21,7 +21,7 @@ typedef std::vector<std::string> stringvec;
 void read_directory(const std::string& name, stringvec& v)
 {
   DIR* dirp = opendir(name.c_str());
-  if(dirp == NULL){
+  if(dirp == NULL) {
     cerr << "no folder " << name << endl;
     exit(EXIT_FAILURE);
   }
@@ -35,61 +35,66 @@ void read_directory(const std::string& name, stringvec& v)
   closedir(dirp);
 }
 
-string init_file(){
-  return "#include <stdlib.h>\n#include <stdint.h>\n\nuint16_t** get_char_table()\n{\n\tuint16_t** chars = malloc(256*sizeof(uint16_t*));\n\tuint16_t* default_char = malloc(2*sizeof(uint16_t));\n\tdefault_char[0] = 1, default_char[1] = 0;\n\tfor(int i = 0; i < 256; i++){\n\t\tchars[i] = default_char;\n\t}\n\n";
+string init_file()
+{
+  return "#include <stdlib.h>\n#include <stdint.h>\n\nuint16_t** get_char_table()\n{\n\tuint16_t** chars = malloc(256*sizeof(uint16_t*));\n\tuint16_t* default_char = malloc(2*sizeof(uint16_t));\n\tdefault_char[0] = 1, default_char[1] = 0;\n\tfor(int i = 0; i < 256; i++) {\n\t\tchars[i] = default_char;\n\t}\n\n";
 }
 
-void get_name(char* path, char* name){
+void get_name(char* path, char* name)
+{
   int i1 = strlen(path) - 1;
   int i2 = i1;
   while(path[--i2] != '.');
   while(path[--i1] != '/');
   i1++;
   int i = 0;
-  for(; i1 < i2; i1++, i++){
+  for(; i1 < i2; i1++, i++) {
     name[i] = path[i1];
   }
   name[i] = '\0';
 }
 
-char get_index(char* path, int* first_available_index, char* returned_name) {
+char get_index(char* path, int* first_available_index, char* returned_name)
+{
   char name[strlen(path)];
   get_name(path, name);
   strcpy(returned_name, name);
 
-  if(strlen(name) == 1 && '!' <= name[0] && name[0] <= '~'){
+  if(strlen(name) == 1 && '!' <= name[0] && name[0] <= '~') {
     return name[0];
   }
-  if(strcmp(name,"Space") == 0){
+  if(strcmp(name,"Space") == 0) {
     return 32;
   }
-  if(strcmp(name,"Dot") == 0){
+  if(strcmp(name,"Dot") == 0) {
     return 46;
   }
-  if(strcmp(name,"Slash") == 0){
+  if(strcmp(name,"Slash") == 0) {
     return 47;
   }
-  if(*first_available_index == 31 /* before the space char code*/){
+  if(*first_available_index == 31 /* before the space char code*/) {
     *first_available_index = 127;
     return 31;
   }
-  if(*first_available_index < 255){
+  if(*first_available_index < 255) {
     return (*first_available_index)++;
   }
   return 0;
 }
 
-int get_leds(Mat ims, int c, int rows){
+int get_leds(Mat ims, int c, int rows)
+{
   int val = 0;
   for(int r = 0; r < rows; r++) {
-    if(ims.at<uchar>(r, c) == 0){
+    if(ims.at<uchar>(r, c) == 0) {
       val += pow(2, rows-r-1);
     }
   }
   return val;
 }
 
-string scan_img(char* path, int* first_available_index) {
+string scan_img(char* path, int* first_available_index)
+{
   Mat ims;
   ims = imread(path, CV_LOAD_IMAGE_GRAYSCALE);
   int cols = ims.cols;
@@ -110,7 +115,7 @@ string scan_img(char* path, int* first_available_index) {
   s[0] = '\0';
   sprintf(s, "\t// %s\n", name);
   sprintf(s, "%s\tchars[%d]=malloc(%d*sizeof(uint16_t));\n\tchars[%d][0]=%d;\n", s, index, cols+1, index, cols);
-  for(int c = 0; c < cols; c++){
+  for(int c = 0; c < cols; c++) {
     int val = get_leds(ims, c, rows);
     sprintf(s, "%s\tchars[%d][%d]=0x%x;\n", s, index, c+1, val);
   }
@@ -144,20 +149,21 @@ void process(const char* dirname, const char* filename)
   for(; it != itEnd; it++) {
     char path[len+(*it).length()+2];
     sprintf(path, "%s%s", dir, (*it).c_str());
-    outfile << scan_img(path, &first_available_index);;
+    outfile << scan_img(path, &first_available_index);
   }
+
   outfile << "\treturn chars;\n}";
   outfile.close();
 }
 
 void usage (const char *s)
 {
-  cout << "Usage: " << s << " dir output-file"<< endl;
+  printf("Usage: %s dir output-file\n", s);
   exit(EXIT_FAILURE);
 }
 
 #define param 2
-int main( int argc, char* argv[] )
+int main(int argc, char* argv[])
 {
   if(argc != (param+1))
     usage(argv[0]);
