@@ -9,8 +9,6 @@
 #ifdef BENCHMARK
 #include "benchmark.h"
 #include "bluetooth.h"
-#define prescale 1024
-#define foscms  13000
 #endif
 
 #include "effethall.h"
@@ -26,17 +24,22 @@ volatile int c = 0;
 ISR(INT0_vect)
 {
   #ifdef BENCHMARK
-  uint16_t start, end;
-  start = pos_timer_read();
-  EIMSK &= ~(1 << INT0);
+  uint16_t debut, fin;
+  pos_timer_start();
+  debut = pos_timer_read();
+  //EIMSK &= ~(1 << INT0);
   countPerTour = pos_timer_read();
+  #ifdef DEBUG_HALL
+  leds_on(LEDS_ON);
+  leds_on(LEDS_OFF);
+  #endif
+  fin=pos_timer_read();
   pos_timer_write(1);
-  end=pos_timer_read();
   pos_timer_stop();
-  timeInInterrup = (countPerTour-start+end);
-  char b[64];
-  sprintf(b,"analog time %lf\n",timeInInterrup);
-  bluetooth_transmit(b);
+  timeInInterrup += (fin-debut);
+  // char b[1000];
+  // sprintf(b,"analog time %d\n",timeInInterrup);
+  // bluetooth_transmit(b);
 
   #else
   EIMSK &= ~(1 << INT0);
@@ -65,12 +68,15 @@ void effethall_init()
 
   countPerTour = 1;
   effethall_timer = 0;
+  #ifdef BENCHMARK
+  EIFR |= (1 << INTF0);
+  #else
+  #endif
 }
 
 inline void effethall_enable_interruption()
 {
-  if (TCNT3 > effethall_timer)
-  {
+  if(TCNT3 > effethall_timer) {
     EIFR |= (1 << INTF0);
     EIMSK |= (1 << INT0);
   }
@@ -79,5 +85,6 @@ inline void effethall_enable_interruption()
   if (TCNT3 > 20000)
     c = 0;
   #endif
+
 
 }
