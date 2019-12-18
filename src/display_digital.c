@@ -40,8 +40,7 @@ uint16_t **chars = NULL;
 
 void reset_display(uint16_t *display)
 {
-  for (int pos = 0; pos < POS_IN_A_TURN; pos++)
-  {
+  for (int pos = 0; pos < POS_IN_A_TURN; pos++) {
     display[pos] = 0;
   }
 }
@@ -59,8 +58,7 @@ void init_digital_display(uint16_t *display)
 unsigned int pixel_length_for_width(char *line, unsigned int line_width)
 {
   int len = 0;
-  for (int c = 0; line[c] != '\0'; c++)
-  {
+  for (int c = 0; line[c] != '\0'; c++) {
     len += (chars[(int)line[c]][0] + 1) * line_width;
   }
   return len - line_width;
@@ -68,14 +66,12 @@ unsigned int pixel_length_for_width(char *line, unsigned int line_width)
 
 unsigned int pixel_length(char *line, unsigned int *line_width, unsigned int max_len)
 {
-  if (line_width == NULL || max_len == 0)
-  {
+  if (line_width == NULL || max_len == 0) {
     return pixel_length_for_width(line, MAX_LINE_WIDTH);
   }
   unsigned int width = MAX_LINE_WIDTH;
   unsigned int len = pixel_length_for_width(line, width);
-  while (len > max_len && width >= MIN_LINE_WIDTH)
-  {
+  while (len > max_len && width >= MIN_LINE_WIDTH) {
     if (len > max_len)
       width--;
     len = pixel_length_for_width(line, width);
@@ -213,28 +209,37 @@ void get_data_to_print(char *line1, char *line2)
     sprintf(line1, "%02d %02d", hours, minutes);
   }
   sprintf(line2, "%02d", seconds);
-
-  // if((seconds/2)%2){
-  //   sprintf(line1, "Creeper!");
-  //   sprintf(line2, "%c", 1);
-  // }
-  // else {
-  //   sprintf(line1, "%c Aww %c", 1, 1);
-  //   sprintf(line2, "man !");
-  // }
 }
 
 void get_data_to_print_love(char *line1, char *line2)
 {
-  if ((seconds / 2) % 2)
-  {
+  // if ((seconds / 2) % 2)
+  // {
+  //   sprintf(line1, "%c", 2);
+  //   sprintf(line2, "LOVE");
+  // }
+  // else
+  // {
+  //   sprintf(line1, "%c", 3);
+  //   sprintf(line2, "YOU");
+  // }
+
+  switch(seconds%4) {
+    case 0:
     sprintf(line1, "%c", 2);
+    break;
+
+    case 1:
     sprintf(line2, "LOVE");
-  }
-  else
-  {
+    break;
+
+    case 2:
     sprintf(line1, "%c", 3);
+    break;
+
+    case 3:
     sprintf(line2, "YOU");
+    break;
   }
 }
 

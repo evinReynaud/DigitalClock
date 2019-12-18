@@ -66,8 +66,7 @@ void init_analog_display(uint16_t *display)
   m_pos = minute_to_pos(0, 0);
   s_pos = seconds_to_pos(0);
 
-  for (int h = 0; h < 12; h++)
-  {
+  for (int h = 0; h < 12; h++) {
     display[hour_mark[h]] |= HOUR_MARK;
   }
 
@@ -83,10 +82,9 @@ void compute_analog_display(uint16_t *display)
   display[h_pos] &= ~(HOUR_HAND);
   display[m_pos] &= ~(MINUTE_HAND);
   // display[s_pos] &= ~(SECOND_HAND); // We do NOT reset the seconds every second
-  if (seconds == 1)
-  { // Reset the seconds
-    for (int pos = 0; pos < POS_IN_A_TURN; pos++)
-    {
+  if (seconds == 1) {
+    // Reset the seconds
+    for (int pos = 0; pos < POS_IN_A_TURN; pos++) {
       display[pos] &= ~(SECOND_HAND);
     }
   }
@@ -105,19 +103,15 @@ void compute_analog_display(uint16_t *display)
   int small_pos = new_s_pos;
   int big_pos = s_pos;
 #endif
-  if (big_pos < small_pos)
-  {
-    for (int pos = 0; pos < big_pos; pos++)
-    {
+  if (big_pos < small_pos) {
+    for (int pos = 0; pos < big_pos; pos++) {
       display[pos] |= SECOND_HAND;
     }
-    for (int pos = small_pos; pos < POS_IN_A_TURN; pos++)
-    {
+    for (int pos = small_pos; pos < POS_IN_A_TURN; pos++) {
       display[pos] |= SECOND_HAND;
     }
   }
-  for (int pos = small_pos; pos <= big_pos; pos++)
-  {
+  for (int pos = small_pos; pos <= big_pos; pos++) {
     display[pos] |= SECOND_HAND;
   }
   s_pos = new_s_pos;

@@ -40,8 +40,7 @@ void update_time()
   update_minute();
   update_hour();
 
-  if (prev_second != seconds)
-  {
+  if (prev_second != seconds) {
     prev_second = seconds;
     compute_display();
   }
