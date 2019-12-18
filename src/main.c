@@ -71,7 +71,7 @@ int main()
 
   initBenchmark();
 
-  bluetooth_transmit("Tape start to begin benchmark\n");
+  bluetooth_transmit("Type start to begin benchmark\n");
   int count = 0;
   char data[256];
   bluetooth_wait_for_data(data);
