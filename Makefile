@@ -1,9 +1,13 @@
 
 .PHONY: all
-all: build
+all: build install	
 
 build:
 	avr-gcc -Wall -Wextra -DF_CPU=13000000 -mmcu=atmega128 -Os src/*.c -o bin/a.out
+	avr-objcopy -O binary bin/a.out bin/a.bin
+
+benchmark:
+	avr-gcc -Wall -Wextra -DBENCHMARK -DF_CPU=13000000 -mmcu=atmega128 -Os src/*.c -o bin/a.out
 	avr-objcopy -O binary bin/a.out bin/a.bin
 
 install:
@@ -14,6 +18,15 @@ img2mat:
 
 letters: img2mat
 	bin/img2mat.bin ./img src/letters.c
+
+.PHONY: help
+help:
+	echo "Usage:"
+	echo " - build: builds the source code"
+	echo " - benchmark: builds the source code for benchmark use"
+	echo " - install: installs the code on the connected device"
+	echo " - img2mat: builds the img2mat program"
+	echo " - letters: recreate the letters.c file from images in the img/ folder"
 
 .PHONY: clean, cleanall
 clean:
