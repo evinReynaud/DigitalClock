@@ -24,22 +24,34 @@ void system_init()
   minutes = 0;
   seconds = 0;
   bluetooth_init();
+  #ifdef VERBOSE
   debug_printf("=================\nStart init\n");
   debug_printf("Init leds\n");
+  #endif
   leds_init();
-  leds_on(0xffff);
+  leds_on(LEDS_ON);
+  #ifdef VERBOSE
   debug_printf("Init timer\n");
+  #endif
   timer_init();
+  #ifdef VERBOSE
   debug_printf("Init position\n");
+  #endif
   position_init();
+  #ifdef VERBOSE
   debug_printf("Init display\n");
+  #endif
   init_display();
+  #ifdef VERBOSE
   debug_printf("Start timer\n");
+  #endif
   timer_start();
 
   leds_on(LEDS_OFF);
 
+  #ifdef VERBOSE
   debug_printf("Init done\n\n");
+  #endif
 }
 
 void hard_reset()
